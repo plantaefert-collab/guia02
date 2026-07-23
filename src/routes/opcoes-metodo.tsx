@@ -28,6 +28,8 @@ import { InicioFlowDemoComponent } from "@/components/InicioFlowDemo";
 
 import { OfficialEditorialFlowComponent } from "@/components/OfficialEditorialFlow";
 
+import { VisualDesignThemesShowcaseComponent } from "@/components/VisualDesignThemesShowcase";
+
 export const Route = createFileRoute("/opcoes-metodo")({
   head: () => ({
     meta: [
@@ -39,7 +41,7 @@ export const Route = createFileRoute("/opcoes-metodo")({
 });
 
 function OpcoesMetodoPage() {
-  const [activeTab, setActiveTab] = useState<"opcao1" | "opcao2" | "opcao3" | "combo" | "onboarding_demos" | "inicio_demo" | "editorial_flow">("editorial_flow");
+  const [activeTab, setActiveTab] = useState<"opcao1" | "opcao2" | "opcao3" | "combo" | "onboarding_demos" | "inicio_demo" | "editorial_flow" | "visual_themes">("visual_themes");
 
   return (
     <div className="min-h-screen bg-[#F8F5EE] text-[#155F4E]">
@@ -111,14 +113,24 @@ function OpcoesMetodoPage() {
                 ★ Combo Recomendado
               </button>
               <button
-                onClick={() => setActiveTab("editorial_flow")}
+                onClick={() => setActiveTab("visual_themes")}
                 className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-                  activeTab === "editorial_flow"
-                    ? "bg-[#D35400] text-white shadow-md font-extrabold"
+                  activeTab === "visual_themes"
+                    ? "bg-[#FF6B4A] text-white shadow-md font-extrabold"
                     : "text-[#F8F5EE]/80 hover:bg-white/10 hover:text-white"
                 }`}
               >
-                📋 Inventário Editorial (3 Passos Oficiais)
+                🎨 Comparador de Estilos (3 Temas)
+              </button>
+              <button
+                onClick={() => setActiveTab("editorial_flow")}
+                className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
+                  activeTab === "editorial_flow"
+                    ? "bg-[#155F4E] text-white shadow-md font-extrabold"
+                    : "text-[#F8F5EE]/80 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                📋 Inventário Editorial (3 Passos)
               </button>
               <button
                 onClick={() => setActiveTab("inicio_demo")}
@@ -146,7 +158,11 @@ function OpcoesMetodoPage() {
       </header>
 
       {/* Main Content Area */}
-      {activeTab === "editorial_flow" ? (
+      {activeTab === "visual_themes" ? (
+        <div className="py-4">
+          <VisualDesignThemesShowcaseComponent />
+        </div>
+      ) : activeTab === "editorial_flow" ? (
         <div className="py-4">
           <OfficialEditorialFlowComponent />
         </div>
