@@ -119,19 +119,49 @@ export function OfficialEditorialFlowComponent() {
     <div className="min-h-screen bg-[#F8F5EE] text-[#173D32] font-sans selection:bg-[#155F4E]/10 pb-16">
       {/* Top Demo Header */}
       <header className="sticky top-0 z-50 border-b border-[#155F4E]/15 bg-[#F8F5EE]/95 backdrop-blur-md px-4 py-3 shadow-sm">
-        <div className="mx-auto flex max-w-md items-center justify-between">
-          <div className="flex items-center gap-2">
-            <PlantaefertLogo className="h-8 w-auto object-contain" />
-            <span className="rounded-full bg-[#155F4E]/10 px-2.5 py-0.5 text-[10.5px] font-extrabold uppercase tracking-wider text-[#155F4E]">
-              Inventário Editorial 3 Passos
-            </span>
+        <div className="mx-auto flex max-w-md flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <PlantaefertLogo className="h-8 w-auto object-contain" />
+              <span className="rounded-full bg-[#155F4E]/10 px-2.5 py-0.5 text-[10.5px] font-extrabold uppercase tracking-wider text-[#155F4E]">
+                Inventário Editorial 3 Passos
+              </span>
+            </div>
+            <button
+              onClick={resetAll}
+              className="flex items-center gap-1 text-[12px] font-bold text-[#D35400] hover:underline"
+            >
+              <RotateCcw size={14} /> Reiniciar
+            </button>
           </div>
-          <button
-            onClick={resetAll}
-            className="flex items-center gap-1 text-[12px] font-bold text-[#D35400] hover:underline"
-          >
-            <RotateCcw size={14} /> Reiniciar
-          </button>
+
+          {/* Quick Step Switcher */}
+          <div className="grid grid-cols-3 gap-1 rounded-xl bg-[#155F4E]/10 p-1 text-[10.5px] font-bold">
+            <button
+              onClick={() => setStep(1)}
+              className={`rounded-lg py-1.5 text-center transition-all ${
+                step === 1 ? "bg-[#155F4E] text-white font-extrabold shadow-xs" : "text-[#173D32]/70 hover:text-[#173D32]"
+              }`}
+            >
+              Passo 1 (Cadastro)
+            </button>
+            <button
+              onClick={() => setStep(2)}
+              className={`rounded-lg py-1.5 text-center transition-all ${
+                step === 2 ? "bg-[#155F4E] text-white font-extrabold shadow-xs" : "text-[#173D32]/70 hover:text-[#173D32]"
+              }`}
+            >
+              Passo 2 (Exame)
+            </button>
+            <button
+              onClick={() => setStep(3)}
+              className={`rounded-lg py-1.5 text-center transition-all ${
+                step === 3 ? "bg-[#D35400] text-white font-extrabold shadow-xs" : "text-[#173D32]/70 hover:text-[#173D32]"
+              }`}
+            >
+              Passo 3 (Veredito)
+            </button>
+          </div>
         </div>
       </header>
 
