@@ -1,4 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+/**
+ * Exiba orientações e alertas contextuais por fase (Diagnosticar, Corrigir, Enraizar, Nutrir, Acompanhar) com avisos de segurança baseados nas condições registradas.
+ */
 import { useEffect, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
