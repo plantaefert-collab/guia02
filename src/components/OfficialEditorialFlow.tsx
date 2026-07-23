@@ -23,7 +23,7 @@ import {
 import {
   CATEGORY_LABEL,
   DIAGNOSIS_OPTIONS,
-  DIAGNOSIS_GUIDANCE,
+  
   computeDiagnosisResult,
   type DiagnosisCategory,
   type DiagnosisGuidance,
