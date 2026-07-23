@@ -22,6 +22,7 @@ import {
   Info,
   Clock,
   HelpCircle,
+  ListTodo,
 } from "lucide-react";
 import {
   CATEGORY_LABEL,
@@ -30,18 +31,35 @@ import {
 } from "@/lib/diagnosis-matrix";
 
 export type UserMode = "first_time" | "returning";
-export type OnboardingOption = "option_v1" | "option_1" | "option_2" | "option_3";
+export type OnboardingOption =
+  | "option_a"
+  | "option_b"
+  | "option_c"
+  | "option_v1"
+  | "option_1"
+  | "option_2"
+  | "option_3";
 
 export function OnboardingDemosComponent() {
   const [userMode, setUserMode] = useState<UserMode>("first_time");
-  const [option, setOption] = useState<OnboardingOption>("option_v1");
+  const [option, setOption] = useState<OnboardingOption>("option_a");
 
   // Form & Orchid State
   const [orchidName, setOrchidName] = useState("Minha Phalaenopsis");
   const [orchidSpecies, setOrchidSpecies] = useState("Phalaenopsis");
   const [environment, setEnvironment] = useState("Varanda / Janela (Luz Indireta)");
 
-  // Option V1 State (Primeira Versão Simplificada - 3 Steps)
+  // Option A State (Passos Guiados: Cadastro -> Diagnostico)
+  const [optAStep, setOptAStep] = useState<number>(1);
+
+  // Option B State (Banner Checklist no Topo do Painel)
+  const [optBNameDone, setOptBNameDone] = useState<boolean>(false);
+  const [optBDiagDone, setOptBDiagDone] = useState<boolean>(false);
+
+  // Option C State (Diagnostico Primeiro -> Cadastro no Final)
+  const [optCStep, setOptCStep] = useState<number>(1);
+
+  // Option V1 State (Primeira Versao Simplificada - 3 Steps)
   const [v1Step, setV1Step] = useState<number>(1);
   const [v1LeafStatus, setV1LeafStatus] = useState("amarela");
   const [v1RootStatus, setV1RootStatus] = useState("seca");
@@ -57,7 +75,7 @@ export function OnboardingDemosComponent() {
     wateringAndRoutine: ["Rego sempre em dias fixos"],
   });
 
-  // Option 2 State (Sintoma Principal / Urgência)
+  // Option 2 State (Sintoma Principal / Urgencia)
   const [opt2Step, setOpt2Step] = useState<number>(0);
   const [primarySymptom, setPrimarySymptom] = useState<string>("roots");
 
@@ -69,6 +87,10 @@ export function OnboardingDemosComponent() {
   const [taskCompleted, setTaskCompleted] = useState<boolean>(false);
 
   const resetAll = () => {
+    setOptAStep(1);
+    setOptBNameDone(false);
+    setOptBDiagDone(false);
+    setOptCStep(1);
     setV1Step(1);
     setWizardStep(0);
     setOpt2Step(0);
@@ -86,15 +108,15 @@ export function OnboardingDemosComponent() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8F5EE] text-[#173D32] font-sans selection:bg-[#155F4E]/10">
+    <div className="min-h-screen bg-[#F8F5EE] text-[#173D32] font-sans selection:bg-[#155F4E]/10 pb-16">
       {/* Top Demo Control Header */}
-      <header className="sticky top-0 z-50 border-b border-[#155F4E]/15 bg-[#F8F5EE]/95 backdrop-blur-md px-4 py-3">
-        <div className="mx-auto flex max-w-xl flex-col gap-2.5">
+      <header className="sticky top-0 z-50 border-b border-[#155F4E]/15 bg-[#F8F5EE]/95 backdrop-blur-md px-4 py-3 shadow-sm">
+        <div className="mx-auto flex max-w-2xl flex-col gap-2.5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <PlantaefertLogo className="h-8 w-auto object-contain" />
               <span className="rounded-full bg-[#155F4E]/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-[#155F4E]">
-                Biblioteca de Modelos de Onboarding
+                Biblioteca Completa de Modelos de Onboarding
               </span>
             </div>
             <button
@@ -136,72 +158,114 @@ export function OnboardingDemosComponent() {
 
           {/* Option Selector for First-Time Users */}
           {userMode === "first_time" && (
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between text-[11px] font-bold text-[#173D32]">
-                <span>Escolha a Versão do Onboarding para Comparar:</span>
-                <span className="text-[#D35400] uppercase font-extrabold">
-                  {option === "option_v1"
-                    ? "1ª Versão (Simplificada)"
-                    : option === "option_1"
-                    ? "Opção 1 (5 Categorias)"
-                    : option === "option_2"
-                    ? "Opção 2 (Triagem Urgência)"
-                    : "Opção 3 (Expresso)"}
-                </span>
+            <div className="space-y-2">
+              {/* Group 1: Estratégias da Página Inicial */}
+              <div>
+                <div className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#155F4E] mb-1">
+                  📌 Grupo I — Estrutura de Boas-Vindas (/inicio):
+                </div>
+                <div className="grid grid-cols-3 gap-1 rounded-xl bg-white p-1 border border-[#155F4E]/15 text-[10px] font-bold">
+                  <button
+                    onClick={() => {
+                      setOption("option_a");
+                      resetAll();
+                    }}
+                    className={`rounded-lg py-1.5 px-1 text-center transition-all ${
+                      option === "option_a"
+                        ? "bg-[#155F4E] text-white shadow-sm font-extrabold"
+                        : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
+                    }`}
+                  >
+                    Opção A (Wizard)
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOption("option_b");
+                      resetAll();
+                    }}
+                    className={`rounded-lg py-1.5 px-1 text-center transition-all ${
+                      option === "option_b"
+                        ? "bg-[#155F4E] text-white shadow-sm font-extrabold"
+                        : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
+                    }`}
+                  >
+                    Opção B (Checklist)
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOption("option_c");
+                      resetAll();
+                    }}
+                    className={`rounded-lg py-1.5 px-1 text-center transition-all ${
+                      option === "option_c"
+                        ? "bg-[#155F4E] text-white shadow-sm font-extrabold"
+                        : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
+                    }`}
+                  >
+                    Opção C (Diagnóst. 1º)
+                  </button>
+                </div>
               </div>
-              <div className="grid grid-cols-4 gap-1 rounded-xl bg-white p-1 border border-[#155F4E]/15 text-[10px] font-bold">
-                <button
-                  onClick={() => {
-                    setOption("option_v1");
-                    resetAll();
-                  }}
-                  className={`rounded-lg py-1.5 px-1 text-center transition-all ${
-                    option === "option_v1"
-                      ? "bg-[#D35400] text-white shadow-sm font-extrabold"
-                      : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
-                  }`}
-                >
-                  ⚡ 1ª Versão
-                </button>
-                <button
-                  onClick={() => {
-                    setOption("option_1");
-                    resetAll();
-                  }}
-                  className={`rounded-lg py-1.5 px-1 text-center transition-all ${
-                    option === "option_1"
-                      ? "bg-[#D35400] text-white shadow-sm font-extrabold"
-                      : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
-                  }`}
-                >
-                  🔬 5 Categ.
-                </button>
-                <button
-                  onClick={() => {
-                    setOption("option_2");
-                    resetAll();
-                  }}
-                  className={`rounded-lg py-1.5 px-1 text-center transition-all ${
-                    option === "option_2"
-                      ? "bg-[#D35400] text-white shadow-sm font-extrabold"
-                      : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
-                  }`}
-                >
-                  🚨 Triagem
-                </button>
-                <button
-                  onClick={() => {
-                    setOption("option_3");
-                    resetAll();
-                  }}
-                  className={`rounded-lg py-1.5 px-1 text-center transition-all ${
-                    option === "option_3"
-                      ? "bg-[#D35400] text-white shadow-sm font-extrabold"
-                      : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
-                  }`}
-                >
-                  ⏱️ Expresso
-                </button>
+
+              {/* Group 2: Formatos de Diagnóstico & Exame */}
+              <div>
+                <div className="text-[10.5px] font-extrabold uppercase tracking-wider text-[#D35400] mb-1">
+                  🔬 Grupo II — Modelos de Diagnóstico & Exame:
+                </div>
+                <div className="grid grid-cols-4 gap-1 rounded-xl bg-white p-1 border border-[#155F4E]/15 text-[10px] font-bold">
+                  <button
+                    onClick={() => {
+                      setOption("option_v1");
+                      resetAll();
+                    }}
+                    className={`rounded-lg py-1.5 px-1 text-center transition-all ${
+                      option === "option_v1"
+                        ? "bg-[#D35400] text-white shadow-sm font-extrabold"
+                        : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
+                    }`}
+                  >
+                    1ª Versão (3 Cards)
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOption("option_1");
+                      resetAll();
+                    }}
+                    className={`rounded-lg py-1.5 px-1 text-center transition-all ${
+                      option === "option_1"
+                        ? "bg-[#D35400] text-white shadow-sm font-extrabold"
+                        : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
+                    }`}
+                  >
+                    Opção 1 (5 Categ.)
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOption("option_2");
+                      resetAll();
+                    }}
+                    className={`rounded-lg py-1.5 px-1 text-center transition-all ${
+                      option === "option_2"
+                        ? "bg-[#D35400] text-white shadow-sm font-extrabold"
+                        : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
+                    }`}
+                  >
+                    Opção 2 (Triagem)
+                  </button>
+                  <button
+                    onClick={() => {
+                      setOption("option_3");
+                      resetAll();
+                    }}
+                    className={`rounded-lg py-1.5 px-1 text-center transition-all ${
+                      option === "option_3"
+                        ? "bg-[#D35400] text-white shadow-sm font-extrabold"
+                        : "text-[#173D32]/70 hover:bg-[#155F4E]/10"
+                    }`}
+                  >
+                    Opção 3 (Expresso)
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -209,16 +273,53 @@ export function OnboardingDemosComponent() {
       </header>
 
       {/* Main Content Area */}
-      <main className="mx-auto min-h-[calc(100vh-140px)] max-w-[440px] px-4 py-5">
+      <main className="mx-auto min-h-[calc(100vh-160px)] max-w-[460px] px-4 py-6">
         <AnimatePresence mode="wait">
           {userMode === "first_time" ? (
             <motion.div
-              key={`first-time-${option}-${v1Step}-${wizardStep}-${opt2Step}-${opt3Step}`}
+              key={`first-time-${option}-${optAStep}-${optBNameDone}-${optBDiagDone}-${optCStep}-${v1Step}-${wizardStep}-${opt2Step}-${opt3Step}`}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}
             >
+              {/* OPTION A: PASSOS GUIADOS (WIZARD 2 TELAS) */}
+              {option === "option_a" && (
+                <RenderOptionA
+                  step={optAStep}
+                  setStep={setOptAStep}
+                  orchidName={orchidName}
+                  setOrchidName={setOrchidName}
+                  orchidSpecies={orchidSpecies}
+                  setOrchidSpecies={setOrchidSpecies}
+                  onFinish={() => setUserMode("returning")}
+                />
+              )}
+
+              {/* OPTION B: BANNER CHECKLIST FIXO NO TOPO */}
+              {option === "option_b" && (
+                <RenderOptionB
+                  orchidName={orchidName}
+                  setOrchidName={setOrchidName}
+                  nameDone={optBNameDone}
+                  setNameDone={setOptBNameDone}
+                  diagDone={optBDiagDone}
+                  setDiagDone={setOptBDiagDone}
+                  onFinish={() => setUserMode("returning")}
+                />
+              )}
+
+              {/* OPTION C: DIAGNOSTICO PRIMEIRA, CADASTRO NO FINAL */}
+              {option === "option_c" && (
+                <RenderOptionC
+                  step={optCStep}
+                  setStep={setOptCStep}
+                  orchidName={orchidName}
+                  setOrchidName={setOrchidName}
+                  onFinish={() => setUserMode("returning")}
+                />
+              )}
+
               {/* OPTION V1: PRIMERA VERSAO SIMPLIFICADA (3 STEPS) */}
               {option === "option_v1" && (
                 <RenderOptionV1
@@ -321,6 +422,363 @@ export function OnboardingDemosComponent() {
 }
 
 /* =========================================================================
+   OPTION A: PASSOS GUIADOS (WIZARD 2 TELAS)
+   ========================================================================= */
+function RenderOptionA({
+  step,
+  setStep,
+  orchidName,
+  setOrchidName,
+  orchidSpecies,
+  setOrchidSpecies,
+  onFinish,
+}: {
+  step: number;
+  setStep: (s: number) => void;
+  orchidName: string;
+  setOrchidName: (v: string) => void;
+  orchidSpecies: string;
+  setOrchidSpecies: (v: string) => void;
+  onFinish: () => void;
+}) {
+  if (step === 1) {
+    return (
+      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5">
+        <div className="flex items-center gap-3">
+          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#155F4E]/10 text-[#155F4E]">
+            <Sprout size={24} />
+          </div>
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#155F4E]">
+              Opção A • Passo 1 de 2
+            </span>
+            <h2 className="font-display text-2xl text-[#173D32]">Qual orquídea vamos cuidar?</h2>
+          </div>
+        </div>
+
+        <p className="mt-3 text-xs text-[#173D32]/75 leading-relaxed">
+          Tela 1 limpa e sem distrações. O cliente dá um nome para criar o vínculo emocional com a planta.
+        </p>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setStep(2);
+          }}
+          className="mt-5 space-y-4"
+        >
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#173D32]">
+              Nome da Orquídea *
+            </label>
+            <input
+              type="text"
+              required
+              value={orchidName}
+              onChange={(e) => setOrchidName(e.target.value)}
+              placeholder="Ex: Phalaenopsis da Sala..."
+              className="mt-1.5 w-full rounded-2xl border border-[#155F4E]/20 bg-[#F8F5EE]/50 px-4 py-3 text-sm font-semibold text-[#173D32]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#173D32]">
+              Espécie
+            </label>
+            <div className="mt-2 grid grid-cols-2 gap-2 text-xs font-semibold">
+              {["Phalaenopsis", "Cattleya", "Dendrobium", "Não sei"].map((sp) => (
+                <button
+                  type="button"
+                  key={sp}
+                  onClick={() => setOrchidSpecies(sp)}
+                  className={`rounded-xl border p-3 text-left transition-all ${
+                    orchidSpecies === sp
+                      ? "border-[#155F4E] bg-[#155F4E]/10 font-bold text-[#155F4E]"
+                      : "border-[#155F4E]/15 bg-white text-[#173D32]/70 hover:border-[#155F4E]/40"
+                  }`}
+                >
+                  {sp}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-4 text-xs font-bold uppercase tracking-wider text-[#F8F5EE] shadow-lg shadow-[#155F4E]/25 transition-all hover:bg-[#10483b]"
+          >
+            Próximo Passo: Fazer Teste de Saúde <ArrowRight size={16} />
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  if (step === 2) {
+    return (
+      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5">
+        <div className="flex items-center gap-3">
+          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#D35400]/10 text-[#D35400]">
+            <Stethoscope size={24} />
+          </div>
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#D35400]">
+              Opção A • Passo 2 de 2
+            </span>
+            <h2 className="font-display text-2xl text-[#173D32]">Qual o sintoma atual dela?</h2>
+          </div>
+        </div>
+
+        <p className="mt-3 text-xs text-[#173D32]/75 leading-relaxed">
+          Tela 2 de resposta rápida em 3 cliques para identificar o alerta principal de "{orchidName}".
+        </p>
+
+        <div className="mt-5 space-y-3 text-xs font-semibold">
+          {[
+            { id: "s1", title: "🟡 Folhas amareladas, murchas ou secas" },
+            { id: "s2", title: "🔴 Raízes secas, escuras ou ocas" },
+            { id: "s3", title: "🌸 Não floresce há muitos meses" },
+          ].map((st) => (
+            <button
+              key={st.id}
+              onClick={() => setStep(3)}
+              className="flex w-full items-center justify-between rounded-2xl border border-[#155F4E]/15 p-4 text-left font-bold text-[#173D32] hover:border-[#155F4E] hover:bg-[#155F4E]/5"
+            >
+              <span>{st.title}</span>
+              <ChevronRight size={16} className="text-[#155F4E]" />
+            </button>
+          ))}
+        </div>
+
+        <button
+          onClick={() => setStep(1)}
+          className="mt-5 text-xs text-[#173D32]/60 hover:underline font-bold"
+        >
+          ← Voltar para o Cadastro da Planta
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <RenderOfficialPrescriptionResult
+      orchidName={orchidName}
+      onFinish={onFinish}
+      priorities={["Recuperação emergencial de raízes e folhas"]}
+      adjustments={["Ajuste de rega semanal"]}
+      favorables={["Ambiente com boa luminosidade"]}
+    />
+  );
+}
+
+/* =========================================================================
+   OPTION B: BANNER CHECKLIST FIXO NO TOPO DO PAINEL
+   ========================================================================= */
+function RenderOptionB({
+  orchidName,
+  setOrchidName,
+  nameDone,
+  setNameDone,
+  diagDone,
+  setDiagDone,
+  onFinish,
+}: {
+  orchidName: string;
+  setOrchidName: (v: string) => void;
+  nameDone: boolean;
+  setNameDone: (v: boolean) => void;
+  diagDone: boolean;
+  setDiagDone: (v: boolean) => void;
+  onFinish: () => void;
+}) {
+  return (
+    <div className="space-y-4">
+      {/* Banner Fixado no Topo */}
+      <div className="rounded-3xl border-2 border-[#155F4E] bg-white p-5 shadow-xl">
+        <div className="flex items-center justify-between">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#155F4E]/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#155F4E]">
+            <ListTodo size={14} /> Opção B • Checklist de Boas-Vindas
+          </span>
+          <span className="text-xs font-bold text-[#D35400]">
+            {nameDone && diagDone ? "2/2 Concluído!" : nameDone || diagDone ? "1/2 Concluído" : "0/2 Concluído"}
+          </span>
+        </div>
+
+        <h2 className="mt-2 font-display text-xl text-[#173D32]">
+          Primeiros Passos para Ativar seu Protocolo
+        </h2>
+
+        <div className="mt-4 space-y-2.5 text-xs font-semibold">
+          {/* Step 1 Checklist */}
+          <div
+            className={`flex items-center justify-between rounded-2xl border p-3.5 transition-all ${
+              nameDone ? "border-emerald-500 bg-emerald-50 text-emerald-900" : "border-[#155F4E]/20 bg-[#F8F5EE]"
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <div
+                onClick={() => setNameDone(!nameDone)}
+                className={`grid h-6 w-6 cursor-pointer place-items-center rounded-full border ${
+                  nameDone ? "bg-emerald-600 border-emerald-600 text-white" : "border-[#173D32]/40 bg-white"
+                }`}
+              >
+                {nameDone && <CheckCircle2 size={14} />}
+              </div>
+              <span>1. Dar nome à minha Orquídea</span>
+            </div>
+            {!nameDone && (
+              <button
+                onClick={() => setNameDone(true)}
+                className="rounded-xl bg-[#155F4E] px-3 py-1 text-[11px] font-bold text-white"
+              >
+                Cadastrar
+              </button>
+            )}
+          </div>
+
+          {/* Step 2 Checklist */}
+          <div
+            className={`flex items-center justify-between rounded-2xl border p-3.5 transition-all ${
+              diagDone ? "border-emerald-500 bg-emerald-50 text-emerald-900" : "border-[#155F4E]/20 bg-[#F8F5EE]"
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <div
+                onClick={() => setDiagDone(!diagDone)}
+                className={`grid h-6 w-6 cursor-pointer place-items-center rounded-full border ${
+                  diagDone ? "bg-emerald-600 border-emerald-600 text-white" : "border-[#173D32]/40 bg-white"
+                }`}
+              >
+                {diagDone && <CheckCircle2 size={14} />}
+              </div>
+              <span>2. Fazer Teste de Saúde Inicial</span>
+            </div>
+            {!diagDone && (
+              <button
+                onClick={() => setDiagDone(true)}
+                className="rounded-xl bg-[#D35400] px-3 py-1 text-[11px] font-bold text-white"
+              >
+                Fazer Teste
+              </button>
+            )}
+          </div>
+        </div>
+
+        {nameDone && diagDone && (
+          <button
+            onClick={onFinish}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg"
+          >
+            Liberar Painel Completo do Dia 1 <ArrowRight size={16} />
+          </button>
+        )}
+      </div>
+
+      {/* Background Dashboard Preview */}
+      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-5 opacity-60 pointer-events-none space-y-3">
+        <div className="text-xs font-bold text-[#173D32]">Painel em Segundo Plano (Aguardando conclusão)</div>
+        <div className="h-16 rounded-2xl bg-[#155F4E]/10 animate-pulse" />
+        <div className="h-24 rounded-2xl bg-[#F8F5EE] animate-pulse" />
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================================
+   OPTION C: DIAGNÓSTICO PRIMEIRA, CADASTRO NO FINAL
+   ========================================================================= */
+function RenderOptionC({
+  step,
+  setStep,
+  orchidName,
+  setOrchidName,
+  onFinish,
+}: {
+  step: number;
+  setStep: (s: number) => void;
+  orchidName: string;
+  setOrchidName: (v: string) => void;
+  onFinish: () => void;
+}) {
+  if (step === 1) {
+    return (
+      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5">
+        <div className="flex items-center gap-3">
+          <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#D35400]/10 text-[#D35400]">
+            <Stethoscope size={24} />
+          </div>
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#D35400]">
+              Opção C • Teste Gratuito
+            </span>
+            <h2 className="font-display text-2xl text-[#173D32]">Diagnóstico de Saúde de 1 Minuto</h2>
+          </div>
+        </div>
+
+        <p className="mt-3 text-xs text-[#173D32]/75 leading-relaxed">
+          Gera valor imediato antes de pedir qualquer informação de cadastro.
+        </p>
+
+        <div className="mt-5 space-y-3 text-xs font-semibold">
+          <div className="rounded-2xl border border-[#155F4E]/15 p-3.5 bg-[#F8F5EE]">
+            <div className="font-bold text-[#155F4E]">Como estão as raízes?</div>
+            <div className="mt-2 flex gap-2">
+              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 text-center font-bold text-[#D35400]">
+                Secas / Ocas
+              </button>
+              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 text-center font-bold text-[#155F4E]">
+                Verdes Firmes
+              </button>
+            </div>
+          </div>
+
+          <button
+            onClick={() => setStep(2)}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#D35400] py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg"
+          >
+            Ver Resultado & Prescrição <ArrowRight size={16} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl text-center space-y-4">
+      <div className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-[#155F4E] text-white">
+        <CheckCircle2 size={28} />
+      </div>
+
+      <span className="text-[11px] font-bold uppercase tracking-wider text-[#D35400]">
+        Opção C • Prescrição Pronta!
+      </span>
+
+      <h2 className="font-display text-2xl text-[#173D32]">
+        Diagnóstico Calculado com Sucesso
+      </h2>
+
+      <div className="rounded-2xl bg-[#F8F5EE] p-4 text-left text-xs space-y-2 border border-[#155F4E]/15">
+        <div className="font-bold text-[#155F4E]">Para qual orquídea devemos salvar este plano de 21 dias?</div>
+        <input
+          type="text"
+          value={orchidName}
+          onChange={(e) => setOrchidName(e.target.value)}
+          placeholder="Ex: Phalaenopsis da Sala..."
+          className="w-full rounded-xl border border-[#155F4E]/20 bg-white px-3.5 py-2.5 text-xs font-semibold text-[#173D32]"
+        />
+      </div>
+
+      <button
+        onClick={onFinish}
+        className="w-full rounded-2xl bg-[#155F4E] py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg"
+      >
+        Salvar & Liberar Dia 1 <ArrowRight size={16} className="inline ml-1" />
+      </button>
+    </div>
+  );
+}
+
+/* =========================================================================
    OPTION V1: PRIMEIRO MODELO SIMPLIFICADO (3 PASSO DIRETO)
    ========================================================================= */
 function RenderOptionV1({
@@ -356,7 +814,6 @@ function RenderOptionV1({
   setBloomStatus: (v: string) => void;
   onFinish: () => void;
 }) {
-  // Step 1: Orchid Identification
   if (step === 1) {
     return (
       <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5">
@@ -430,7 +887,6 @@ function RenderOptionV1({
     );
   }
 
-  // Step 2: Quick Diagnosis Cards
   if (step === 2) {
     return (
       <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5">
@@ -451,7 +907,6 @@ function RenderOptionV1({
         </p>
 
         <div className="mt-5 space-y-4 text-xs font-semibold">
-          {/* Leaf card */}
           <div>
             <label className="block uppercase font-bold text-[#173D32]">1. Folhas</label>
             <div className="mt-1.5 grid grid-cols-2 gap-2">
@@ -480,7 +935,6 @@ function RenderOptionV1({
             </div>
           </div>
 
-          {/* Root card */}
           <div>
             <label className="block uppercase font-bold text-[#173D32]">2. Raízes</label>
             <div className="mt-1.5 grid grid-cols-2 gap-2">
@@ -530,7 +984,6 @@ function RenderOptionV1({
     );
   }
 
-  // Step 3: Result & Prescription
   return (
     <RenderOfficialPrescriptionResult
       orchidName={orchidName}
@@ -601,7 +1054,7 @@ function RenderOption1({
               value={orchidName}
               onChange={(e) => setOrchidName(e.target.value)}
               placeholder="Ex: Phalaenopsis da Sala, Princesa..."
-              className="mt-1.5 w-full rounded-2xl border border-[#155F4E]/20 bg-[#F8F5EE]/50 px-4 py-3 text-sm font-semibold text-[#173D32] outline-none focus:border-[#155F4E] focus:bg-white focus:ring-2 focus:ring-[#155F4E]/20"
+              className="mt-1.5 w-full rounded-2xl border border-[#155F4E]/20 bg-[#F8F5EE]/50 px-4 py-3 text-sm font-semibold text-[#173D32]"
             />
           </div>
 
@@ -627,21 +1080,9 @@ function RenderOption1({
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-[#173D32]">
-              Ambiente de Cultivo
-            </label>
-            <input
-              type="text"
-              value={environment}
-              onChange={(e) => setEnvironment(e.target.value)}
-              className="mt-1.5 w-full rounded-2xl border border-[#155F4E]/20 bg-[#F8F5EE]/50 px-4 py-3 text-sm font-semibold text-[#173D32]"
-            />
-          </div>
-
           <button
             onClick={() => setStep(1)}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-4 text-xs font-bold uppercase tracking-wider text-[#F8F5EE] shadow-lg shadow-[#155F4E]/25 transition-all hover:bg-[#10483b] active:scale-[0.98]"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-4 text-xs font-bold uppercase tracking-wider text-[#F8F5EE] shadow-lg shadow-[#155F4E]/25 transition-all hover:bg-[#10483b]"
           >
             Iniciar Diagnóstico de 5 Passos <ArrowRight size={16} />
           </button>
@@ -690,10 +1131,6 @@ function RenderOption1({
           </div>
         </div>
 
-        <p className="mt-2 text-xs text-[#173D32]/75 leading-relaxed">
-          Selecione todos os sinais que você observa atualmente em "{orchidName}" (pode marcar mais de um):
-        </p>
-
         <div className="mt-4 space-y-2 max-h-[280px] overflow-y-auto pr-1">
           {options.map((opt) => {
             const isChecked = currentSelected.includes(opt);
@@ -725,14 +1162,14 @@ function RenderOption1({
           <button
             type="button"
             onClick={() => setStep(step - 1)}
-            className="rounded-2xl border border-[#155F4E]/20 px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#173D32]/70 hover:bg-[#155F4E]/10"
+            className="rounded-2xl border border-[#155F4E]/20 px-4 py-3 text-xs font-bold uppercase text-[#173D32]/70"
           >
             Voltar
           </button>
           <button
             type="button"
             onClick={() => setStep(step + 1)}
-            className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-3.5 text-xs font-bold uppercase tracking-wider text-[#F8F5EE] shadow-lg shadow-[#155F4E]/20 hover:bg-[#10483b]"
+            className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-3.5 text-xs font-bold uppercase text-[#F8F5EE] shadow-lg"
           >
             {step === 5 ? "Gerar Prescrição Oficial" : "Próxima Categoria"} <ArrowRight size={16} />
           </button>
@@ -795,26 +1232,18 @@ function RenderOption2({
           </div>
         </div>
 
-        <p className="mt-3 text-xs text-[#173D32]/75 leading-relaxed">
-          Modelo focado em responder primeiro o sintoma de maior emergência da planta.
-        </p>
-
         <div className="mt-5 space-y-4">
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-[#173D32]">
-              Nome da Orquídea *
-            </label>
-            <input
-              type="text"
-              value={orchidName}
-              onChange={(e) => setOrchidName(e.target.value)}
-              className="mt-1.5 w-full rounded-2xl border border-[#155F4E]/20 bg-[#F8F5EE]/50 px-4 py-3 text-sm font-semibold text-[#173D32]"
-            />
-          </div>
+          <input
+            type="text"
+            value={orchidName}
+            onChange={(e) => setOrchidName(e.target.value)}
+            className="w-full rounded-2xl border border-[#155F4E]/20 bg-[#F8F5EE]/50 px-4 py-3 text-sm font-semibold text-[#173D32]"
+            placeholder="Nome da orquídea"
+          />
 
           <button
             onClick={() => setStep(1)}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#D35400] py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-[#D35400]/25 transition-all hover:bg-[#b84800]"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#D35400] py-4 text-xs font-bold uppercase text-white shadow-lg"
           >
             Ir para Triagem por Sintoma <ArrowRight size={16} />
           </button>
@@ -825,34 +1254,19 @@ function RenderOption2({
 
   if (step === 1) {
     return (
-      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5">
+      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl">
         <span className="text-[11px] font-bold uppercase tracking-wider text-[#D35400]">
           Opção 2 • Triagem Passo 2
         </span>
         <h2 className="mt-1 font-display text-2xl text-[#173D32]">
           Qual o Sintoma Principal de "{orchidName}"?
         </h2>
-        <p className="mt-2 text-xs text-[#173D32]/75">
-          Selecione a dor ou alteração que mais te preocupa hoje para focarmos o socorro:
-        </p>
 
         <div className="mt-5 space-y-3">
           {[
-            {
-              id: "roots",
-              title: "🔴 Raízes secas, moles ou escuras",
-              desc: "Planta com dificuldade para absorver água e nutrientes",
-            },
-            {
-              id: "leaves",
-              title: "🟡 Folhas amareladas, murchas ou com manchas",
-              desc: "Sinal de estresse hídrico, queimadura ou nutrição fraca",
-            },
-            {
-              id: "bloom",
-              title: "🌸 Não floresce há muitos meses ou botões caem",
-              desc: "Falta de energia biológica para emitir hastes florais",
-            },
+            { id: "roots", title: "🔴 Raízes secas, moles ou escuras" },
+            { id: "leaves", title: "🟡 Folhas amareladas, murchas ou com manchas" },
+            { id: "bloom", title: "🌸 Não floresce há muitos meses ou botões caem" },
           ].map((item) => (
             <button
               key={item.id}
@@ -860,68 +1274,13 @@ function RenderOption2({
                 setPrimarySymptom(item.id);
                 setStep(2);
               }}
-              className={`flex w-full items-start gap-3 rounded-2xl border p-4 text-left transition-all ${
-                primarySymptom === item.id
-                  ? "border-[#D35400] bg-[#D35400]/10 text-[#D35400] font-bold shadow-md"
-                  : "border-[#155F4E]/15 bg-white text-[#173D32]/80 hover:border-[#D35400]/30"
-              }`}
+              className="flex w-full items-center justify-between rounded-2xl border border-[#155F4E]/15 p-4 text-left font-bold text-[#173D32] hover:border-[#D35400]"
             >
-              <div>
-                <div className="text-sm font-bold text-[#173D32]">{item.title}</div>
-                <div className="mt-1 text-xs opacity-75">{item.desc}</div>
-              </div>
+              <span>{item.title}</span>
+              <ChevronRight size={16} />
             </button>
           ))}
         </div>
-      </div>
-    );
-  }
-
-  if (step === 2) {
-    return (
-      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-[#155F4E]">
-          Opção 2 • Perguntas Específicas
-        </span>
-        <h2 className="mt-1 font-display text-xl text-[#173D32]">
-          Aprofundamento sobre Sintoma Selecionado
-        </h2>
-        <p className="mt-2 text-xs text-[#173D32]/75">
-          Com base na sua escolha, confirme estes pontos adicionais sobre substrato e irrigação:
-        </p>
-
-        <div className="mt-4 space-y-3 text-xs font-semibold">
-          <div className="rounded-2xl border border-[#155F4E]/15 bg-[#F8F5EE] p-3.5">
-            <div className="font-bold text-[#155F4E]">A água escoa livremente após regar?</div>
-            <div className="mt-2 flex gap-2">
-              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 text-center font-bold">
-                Sim, escoa bem
-              </button>
-              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 text-center font-bold text-[#D35400]">
-                Não, acumula
-              </button>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-[#155F4E]/15 bg-[#F8F5EE] p-3.5">
-            <div className="font-bold text-[#155F4E]">Qual a frequência de rega atual?</div>
-            <div className="mt-2 flex gap-2">
-              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 text-center font-bold">
-                1x por semana
-              </button>
-              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 text-center font-bold">
-                Apenas quando seca
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <button
-          onClick={() => setStep(3)}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-4 text-xs font-bold uppercase tracking-wider text-[#F8F5EE] shadow-lg shadow-[#155F4E]/25 transition-all hover:bg-[#10483b]"
-        >
-          Gerar Prescrição de Socorro <ArrowRight size={16} />
-        </button>
       </div>
     );
   }
@@ -967,14 +1326,11 @@ function RenderOption3({
 }) {
   if (step === 0) {
     return (
-      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5">
+      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl">
         <span className="text-[11px] font-bold uppercase tracking-wider text-[#D35400]">
           Opção 3 • Expresso 3 Perguntas
         </span>
         <h2 className="mt-1 font-display text-2xl text-[#173D32]">Identifique a Orquídea</h2>
-        <p className="mt-2 text-xs text-[#173D32]/75">
-          Diagnóstico ultra-rápido de 30 segundos com opção de refinar depois.
-        </p>
 
         <div className="mt-4 space-y-4">
           <input
@@ -987,7 +1343,7 @@ function RenderOption3({
 
           <button
             onClick={() => setStep(1)}
-            className="w-full rounded-2xl bg-[#155F4E] py-4 text-xs font-bold uppercase tracking-wider text-[#F8F5EE] shadow-lg shadow-[#155F4E]/20 hover:bg-[#10483b]"
+            className="w-full rounded-2xl bg-[#155F4E] py-4 text-xs font-bold uppercase text-white shadow-lg"
           >
             Iniciar Check-up Expresso (3 Perguntas) <ArrowRight size={16} className="inline ml-1" />
           </button>
@@ -996,90 +1352,14 @@ function RenderOption3({
     );
   }
 
-  if (step === 1) {
-    return (
-      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5 space-y-4">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-[#D35400]">
-          Opção 3 • 3 Perguntas Cruciais
-        </span>
-        <h2 className="font-display text-xl text-[#173D32]">Check-up Rápido de "{orchidName}"</h2>
-
-        <div className="space-y-3 text-xs font-semibold">
-          <div className="rounded-2xl border border-[#155F4E]/15 p-3.5 bg-[#F8F5EE]">
-            <div className="font-bold text-[#155F4E]">1. Estado das Raízes</div>
-            <div className="mt-1.5 flex gap-2">
-              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 font-bold text-[#D35400]">
-                Secas / Ocas
-              </button>
-              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 font-bold text-[#155F4E]">
-                Verdes / Firmes
-              </button>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-[#155F4E]/15 p-3.5 bg-[#F8F5EE]">
-            <div className="font-bold text-[#155F4E]">2. Estado das Folhas</div>
-            <div className="mt-1.5 flex gap-2">
-              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 font-bold text-[#D35400]">
-                Amareladas
-              </button>
-              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 font-bold text-[#155F4E]">
-                Verdes Firmes
-              </button>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-[#155F4E]/15 p-3.5 bg-[#F8F5EE]">
-            <div className="font-bold text-[#155F4E]">3. Luminosidade</div>
-            <div className="mt-1.5 flex gap-2">
-              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 font-bold text-[#155F4E]">
-                Luz Indireta
-              </button>
-              <button className="flex-1 rounded-xl bg-white p-2 border border-[#155F4E]/20 font-bold text-[#D35400]">
-                Sol Direto
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <button
-          onClick={() => setStep(2)}
-          className="w-full rounded-2xl bg-[#D35400] py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-[#D35400]/25 hover:bg-[#b84800]"
-        >
-          Ver Diagnóstico Expresso <ArrowRight size={16} className="inline ml-1" />
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-4">
-      <RenderOfficialPrescriptionResult
-        orchidName={orchidName}
-        onFinish={onFinish}
-        priorities={["Raízes secas detectadas"]}
-        adjustments={["Ajuste de luz indireta"]}
-        favorables={["Folhas firmes"]}
-        extraHeaderInfo={
-          !isDeepened && (
-            <div className="mb-4 rounded-2xl border border-[#D35400]/30 bg-[#D35400]/10 p-3.5 text-left text-xs font-semibold text-[#D35400]">
-              <div className="flex items-center gap-1.5 font-bold">
-                <Info size={16} /> Diagnóstico Expresso Gerado!
-              </div>
-              <p className="mt-1 opacity-90 text-[11px]">
-                Você respondeu 3 perguntas essenciais. Quer responder mais 2 sobre Vaso e Rega para aumentar a precisão da prescrição?
-              </p>
-              <button
-                onClick={() => setIsDeepened(true)}
-                className="mt-2.5 rounded-xl bg-[#D35400] px-3 py-1.5 text-[11px] font-bold text-white shadow-sm hover:bg-[#b84800]"
-              >
-                + Aprofundar Vaso e Rega Agora
-              </button>
-            </div>
-          )
-        }
-      />
-    </div>
+    <RenderOfficialPrescriptionResult
+      orchidName={orchidName}
+      onFinish={onFinish}
+      priorities={["Raízes secas detectadas"]}
+      adjustments={["Ajuste de luz indireta"]}
+      favorables={["Folhas firmes"]}
+    />
   );
 }
 
@@ -1102,60 +1382,23 @@ function RenderOfficialPrescriptionResult({
   extraHeaderInfo?: React.ReactNode;
 }) {
   return (
-    <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5 text-center">
+    <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl text-center space-y-4">
       {extraHeaderInfo}
 
-      <div className="mx-auto grid h-14 w-14 place-items-center rounded-3xl bg-[#155F4E] text-[#F8F5EE] shadow-lg shadow-[#155F4E]/25">
+      <div className="mx-auto grid h-14 w-14 place-items-center rounded-3xl bg-[#155F4E] text-white shadow-lg">
         <CheckCircle2 size={32} />
       </div>
 
-      <span className="mt-3 inline-flex items-center gap-1 rounded-full bg-[#155F4E]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#155F4E]">
+      <span className="inline-flex items-center gap-1 rounded-full bg-[#155F4E]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#155F4E]">
         <Award size={13} /> Prescrição Oficial PlantaeFert
       </span>
 
-      <h2 className="mt-2 font-display text-2xl text-[#173D32]">
+      <h2 className="font-display text-2xl text-[#173D32]">
         Diagnóstico de "{orchidName}"
       </h2>
 
-      {/* Vigor Score & Summary */}
-      <div className="mt-4 grid grid-cols-3 gap-2 rounded-2xl bg-[#F8F5EE] p-3 text-center text-xs">
-        <div className="rounded-xl bg-white p-2.5 border border-[#155F4E]/10">
-          <div className="text-[10px] font-bold uppercase text-[#D35400]">Prioridades</div>
-          <div className="text-lg font-extrabold text-[#D35400]">{priorities.length}</div>
-        </div>
-        <div className="rounded-xl bg-white p-2.5 border border-[#155F4E]/10">
-          <div className="text-[10px] font-bold uppercase text-[#155F4E]">Ajustes</div>
-          <div className="text-lg font-extrabold text-[#155F4E]">{adjustments.length}</div>
-        </div>
-        <div className="rounded-xl bg-white p-2.5 border border-[#155F4E]/10">
-          <div className="text-[10px] font-bold uppercase text-[#155F4E]">Favoráveis</div>
-          <div className="text-lg font-extrabold text-[#155F4E]">{favorables.length}</div>
-        </div>
-      </div>
-
-      {/* Actionable Guidance Tips */}
-      <div className="mt-4 rounded-2xl border border-[#155F4E]/15 bg-[#F8F5EE]/60 p-4 text-left space-y-2 text-xs">
-        <div className="font-bold uppercase tracking-wider text-[#155F4E] flex items-center gap-1.5">
-          <Stethoscope size={14} /> Recomendações Práticas do que Fazer & Evitar
-        </div>
-        <div className="space-y-1.5 text-[#173D32]/85 text-[11.5px] leading-relaxed">
-          <div className="flex items-start gap-1.5">
-            <span className="text-[#D35400] font-bold">•</span>
-            <span><strong>O que Fazer:</strong> Aplicar o Enraizador Orgânico 500ml Pronto Uso semanalmente para recuperar o sistema de raízes.</span>
-          </div>
-          <div className="flex items-start gap-1.5">
-            <span className="text-[#D35400] font-bold">•</span>
-            <span><strong>O que Evitar:</strong> Evitar aplicar sob sol forte (entre 9h e 16h) e nunca aplicar diretamente sobre as flores.</span>
-          </div>
-          <div className="flex items-start gap-1.5">
-            <span className="text-[#155F4E] font-bold">•</span>
-            <span><strong>O que Observar:</strong> Surgimento de pontas novas de raízes verdes ou prateadas nas próximas 2 a 3 semanas.</span>
-          </div>
-        </div>
-      </div>
-
       {/* Official Kit Prescriptions Card (PRONTO USO - NO DILUTION) */}
-      <div className="mt-4 rounded-2xl border-2 border-[#155F4E]/20 bg-gradient-to-br from-[#155F4E]/5 to-[#155F4E]/10 p-4 text-left">
+      <div className="rounded-2xl border-2 border-[#155F4E]/20 bg-gradient-to-br from-[#155F4E]/5 to-[#155F4E]/10 p-4 text-left">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#155F4E]">
             <ShieldCheck size={16} /> Kit Método 2 Passos (500ml Pronto Uso)
@@ -1166,7 +1409,6 @@ function RenderOfficialPrescriptionResult({
         </div>
 
         <div className="mt-3 space-y-2.5 text-xs text-[#173D32]">
-          {/* Step 1: Enraizador */}
           <div className="rounded-xl bg-white p-3 border border-[#155F4E]/15 shadow-sm space-y-1">
             <div className="flex items-center justify-between font-bold text-[#155F4E]">
               <span className="flex items-center gap-1.5">
@@ -1177,11 +1419,10 @@ function RenderOfficialPrescriptionResult({
               </span>
             </div>
             <p className="text-[11px] text-[#173D32]/80">
-              Formulado com <strong>Ácidos Húmicos, Fúlvicos e Extrato de Algas Marinhas</strong>. Borrifar 1x por semana diretamente nas raízes e no substrato (sem diluir).
+              Formulado com <strong>Ácidos Húmicos, Fúlvicos e Algas Marinhas</strong>. Borrifar 1x por semana nas raízes e substrato (sem diluir).
             </p>
           </div>
 
-          {/* Step 2: Bokashi */}
           <div className="rounded-xl bg-white p-3 border border-[#155F4E]/15 shadow-sm space-y-1">
             <div className="flex items-center justify-between font-bold text-[#155F4E]">
               <span className="flex items-center gap-1.5">
@@ -1192,25 +1433,15 @@ function RenderOfficialPrescriptionResult({
               </span>
             </div>
             <p className="text-[11px] text-[#173D32]/80">
-              Nutrição orgânica completa para folhas, brotos e hastes florais. Aplicar em seguida nas raízes, folhas e substrato (sem diluir).
+              Nutrição orgânica completa para folhas, brotos e hastes florais. Aplicar nas raízes, folhas e substrato (sem diluir).
             </p>
-          </div>
-
-          {/* Frequency & Rules Footer */}
-          <div className="flex items-center justify-between text-[10.5px] font-bold text-[#155F4E] pt-1">
-            <span className="flex items-center gap-1">
-              <Clock size={12} /> Horas frescas (antes das 9h ou após 16h)
-            </span>
-            <span className="flex items-center gap-1 text-[#D35400]">
-              <ShieldCheck size={12} /> Seguro p/ Pets
-            </span>
           </div>
         </div>
       </div>
 
       <button
         onClick={onFinish}
-        className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-4 text-xs font-bold uppercase tracking-wider text-[#F8F5EE] shadow-xl shadow-[#155F4E]/25 transition-all hover:bg-[#10483b] active:scale-[0.98]"
+        className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-4 text-xs font-bold uppercase tracking-wider text-white shadow-xl hover:bg-[#10483b]"
       >
         Liberar Painel do Dia 1 para "{orchidName}" <ChevronRight size={18} />
       </button>
@@ -1266,7 +1497,7 @@ function ActiveClientDashboard({
       </div>
 
       {/* TODAY'S TASK (DAY 3 - OFFICIAL APPLICATION RULE) */}
-      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl shadow-[#173D32]/5 space-y-3">
+      <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl space-y-3">
         <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#D35400]">
           <span>Fase I: Enraizar • Hoje (Dia 3)</span>
           <span className="flex h-2 w-2 rounded-full bg-[#D35400] animate-ping" />
@@ -1298,7 +1529,7 @@ function ActiveClientDashboard({
           className={`flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-xs font-bold uppercase tracking-wider transition-all ${
             taskCompleted
               ? "bg-[#155F4E]/15 text-[#155F4E] border border-[#155F4E]/30"
-              : "bg-[#155F4E] text-[#F8F5EE] shadow-md shadow-[#155F4E]/20 hover:bg-[#10483b]"
+              : "bg-[#155F4E] text-[#F8F5EE] shadow-md hover:bg-[#10483b]"
           }`}
         >
           {taskCompleted ? (
