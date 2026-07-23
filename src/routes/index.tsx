@@ -28,7 +28,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import welcomeOrchid from "@/assets/hero-plantaefert.jpg";
 import kitMetodo from "@/assets/kit-metodo-app.jpg";
-import logoPlantaefert from "@/assets/logo-plantaefert.png";
+import { PlantaefertLogo } from "@/components/PlantaefertLogo";
 import { useAuthBootstrap } from "@/hooks/use-auth-bootstrap";
 
 export const Route = createFileRoute("/")({
@@ -202,11 +202,7 @@ function HomePage() {
       <header className="sticky top-0 z-30 border-b border-[#155F4E]/10 bg-[#F8F5EE]/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:h-20 md:px-10">
           <Link to="/" className="flex shrink-0 items-center">
-            <img
-              src={logoPlantaefert}
-              alt="PlantaeFert Nutrição Vegetal"
-              className="h-10 md:h-12 w-auto object-contain transition-transform hover:scale-105"
-            />
+            <PlantaefertLogo className="h-9 md:h-11 w-auto object-contain transition-transform hover:scale-105" />
           </Link>
           <nav className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] font-semibold sm:gap-6">
             <Link to={isLoggedIn ? "/metodo" : "/auth"} className="hidden text-[#155F4E]/70 hover:text-[#D35400] transition sm:inline">
@@ -772,11 +768,7 @@ function HomePage() {
 
       <footer className="border-t border-[#155F4E]/10 py-12 text-center bg-[#F8F5EE]">
         <div className="flex flex-col items-center justify-center gap-4">
-          <img
-            src={logoPlantaefert}
-            alt="PlantaeFert Nutrição Vegetal"
-            className="h-9 w-auto object-contain opacity-90"
-          />
+          <PlantaefertLogo className="h-8 md:h-9 w-auto object-contain opacity-90" />
           <div className="text-[10px] uppercase tracking-[0.3em] text-[#155F4E]/60">
             © {new Date().getFullYear()} PlantaeFert · Método de 2 Passos &amp; Tecnologias Botânicas
           </div>

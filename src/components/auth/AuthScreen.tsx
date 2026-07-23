@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
-import logoPlantaefert from "@/assets/logo-plantaefert.png";
+import { PlantaefertLogo } from "@/components/PlantaefertLogo";
 
 
 type Feedback = {
@@ -160,11 +159,7 @@ export function AuthScreen({ onBack, onSuccess }: AuthScreenProps) {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-5">
       <div className="w-full max-w-[400px] bg-card p-8 rounded-3xl border border-border shadow-xl">
         <header className="text-center mb-8">
-          <img
-            src={logoPlantaefert}
-            alt="PlantaeFert — Nutrição Vegetal"
-            className="mx-auto mb-5 h-20 w-auto object-contain"
-          />
+          <PlantaefertLogo className="mx-auto mb-5 h-16 w-auto object-contain" />
 
           <h1 className="font-display text-2xl text-primary">
             {mode === "login" ? "Bem-vindo de volta" : "Crie sua conta"}

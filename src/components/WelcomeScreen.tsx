@@ -11,9 +11,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { useProtocolStore } from "@/lib/protocol-store";
-import logoPlantaefertAsset from "@/assets/plantaefert-logo.png.asset.json";
-const logoPlantaefert = logoPlantaefertAsset.url;
+import { PlantaefertLogo } from "@/components/PlantaefertLogo";
 import { getProtocolDay, getProtocolPhase } from "@/lib/protocol-plan";
 import welcomeOrchid from "@/assets/welcome-orchid.jpg";
 
@@ -92,11 +90,7 @@ export function WelcomeScreen({
         className="mx-auto flex min-h-screen w-full max-w-[440px] flex-col px-5 pb-8 pt-6 sm:my-6 sm:min-h-[calc(100vh-3rem)] sm:rounded-[28px] sm:px-6 sm:shadow-[0_20px_70px_-40px_rgba(23,61,50,0.35)] border-x border-border/10 sm:border"
       >
         <header className="flex items-center">
-          <img
-            src={logoPlantaefert}
-            alt="PlantaeFert — Nutrição Vegetal"
-            className="h-20 w-auto"
-          />
+          <PlantaefertLogo className="h-12 w-auto object-contain" />
         </header>
 
 

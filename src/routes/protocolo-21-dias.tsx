@@ -5,9 +5,7 @@ import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
 import sceneEnraizar from "@/assets/scene-enraizar.jpg";
 import sceneNutrir from "@/assets/scene-nutrir.jpg";
-import kitMetodo from "@/assets/kit-metodo.jpg.asset.json";
-import logoPlantaefertAsset from "@/assets/plantaefert-logo.png.asset.json";
-const logoPlantaefert = logoPlantaefertAsset.url;
+import { PlantaefertLogo } from "@/components/PlantaefertLogo";
 import { playSuccessSound, playPopSound } from "@/lib/audio-feedback";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -570,11 +568,7 @@ function AppShell({
         <header className="sticky top-0 z-20 flex flex-col border-b border-border bg-card/80 backdrop-blur-md sm:rounded-t-2xl">
           <div className="flex items-center justify-between gap-3 px-4 py-4">
             <Link to="/" className="flex items-center" aria-label="PlantaeFert — Início">
-              <img
-                src={logoPlantaefert}
-                alt="PlantaeFert — Nutrição Vegetal"
-                className="h-[72px] w-auto"
-              />
+              <PlantaefertLogo className="h-10 w-auto object-contain" />
             </Link>
             <div className="flex items-center gap-1">
               {state.plant.name && (
