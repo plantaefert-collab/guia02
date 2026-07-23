@@ -637,7 +637,7 @@ export function OfficialEditorialFlowComponent() {
                 </p>
 
                 <div className="space-y-2">
-                  {resultData.trackingHighlights.slice(0, 5).map((track, i) => (
+                  {resultData.trackingPoints.slice(0, 5).map((track: string, i: number) => (
                     <div
                       key={i}
                       className="flex items-center gap-2.5 rounded-xl bg-white p-3 text-xs font-bold text-[#173D32] border border-[#155F4E]/15"
