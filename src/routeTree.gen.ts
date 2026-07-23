@@ -16,6 +16,7 @@ import { Route as BemVindoRouteImport } from './routes/bem-vindo'
 import { Route as DiagnosticoRouteImport } from './routes/diagnostico'
 import { Route as DiarioRouteImport } from './routes/diario'
 import { Route as InicioRouteImport } from './routes/inicio'
+import { Route as InicioDemoRouteImport } from './routes/inicio-demo'
 import { Route as MetodoRouteImport } from './routes/metodo'
 import { Route as MinhaOrquideaRouteImport } from './routes/minha-orquidea'
 import { Route as OpcoesMetodoRouteImport } from './routes/opcoes-metodo'
@@ -57,6 +58,11 @@ const DiarioRoute = DiarioRouteImport.update({
 const InicioRoute = InicioRouteImport.update({
   id: '/inicio',
   path: '/inicio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InicioDemoRoute = InicioDemoRouteImport.update({
+  id: '/inicio-demo',
+  path: '/inicio-demo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MetodoRoute = MetodoRouteImport.update({
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/diagnostico': typeof DiagnosticoRoute
   '/diario': typeof DiarioRoute
   '/inicio': typeof InicioRoute
+  '/inicio-demo': typeof InicioDemoRoute
   '/metodo': typeof MetodoRoute
   '/minha-orquidea': typeof MinhaOrquideaRoute
   '/opcoes-metodo': typeof OpcoesMetodoRoute
@@ -119,6 +126,7 @@ export interface FileRoutesByTo {
   '/diagnostico': typeof DiagnosticoRoute
   '/diario': typeof DiarioRoute
   '/inicio': typeof InicioRoute
+  '/inicio-demo': typeof InicioDemoRoute
   '/metodo': typeof MetodoRoute
   '/minha-orquidea': typeof MinhaOrquideaRoute
   '/opcoes-metodo': typeof OpcoesMetodoRoute
@@ -136,6 +144,7 @@ export interface FileRoutesById {
   '/diagnostico': typeof DiagnosticoRoute
   '/diario': typeof DiarioRoute
   '/inicio': typeof InicioRoute
+  '/inicio-demo': typeof InicioDemoRoute
   '/metodo': typeof MetodoRoute
   '/minha-orquidea': typeof MinhaOrquideaRoute
   '/opcoes-metodo': typeof OpcoesMetodoRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/diagnostico'
     | '/diario'
     | '/inicio'
+    | '/inicio-demo'
     | '/metodo'
     | '/minha-orquidea'
     | '/opcoes-metodo'
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/diagnostico'
     | '/diario'
     | '/inicio'
+    | '/inicio-demo'
     | '/metodo'
     | '/minha-orquidea'
     | '/opcoes-metodo'
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/diagnostico'
     | '/diario'
     | '/inicio'
+    | '/inicio-demo'
     | '/metodo'
     | '/minha-orquidea'
     | '/opcoes-metodo'
@@ -203,6 +215,7 @@ export interface RootRouteChildren {
   DiagnosticoRoute: typeof DiagnosticoRoute
   DiarioRoute: typeof DiarioRoute
   InicioRoute: typeof InicioRoute
+  InicioDemoRoute: typeof InicioDemoRoute
   MetodoRoute: typeof MetodoRoute
   MinhaOrquideaRoute: typeof MinhaOrquideaRoute
   OpcoesMetodoRoute: typeof OpcoesMetodoRoute
@@ -261,6 +274,13 @@ declare module '@tanstack/react-router' {
       path: '/inicio'
       fullPath: '/inicio'
       preLoaderRoute: typeof InicioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inicio-demo': {
+      id: '/inicio-demo'
+      path: '/inicio-demo'
+      fullPath: '/inicio-demo'
+      preLoaderRoute: typeof InicioDemoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/metodo': {
@@ -323,6 +343,7 @@ const rootRouteChildren: RootRouteChildren = {
   DiagnosticoRoute: DiagnosticoRoute,
   DiarioRoute: DiarioRoute,
   InicioRoute: InicioRoute,
+  InicioDemoRoute: InicioDemoRoute,
   MetodoRoute: MetodoRoute,
   MinhaOrquideaRoute: MinhaOrquideaRoute,
   OpcoesMetodoRoute: OpcoesMetodoRoute,
