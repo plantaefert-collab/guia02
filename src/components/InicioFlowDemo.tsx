@@ -17,7 +17,13 @@ import {
   ListTodo,
   Flower2,
   Droplets,
+  Info,
 } from "lucide-react";
+import {
+  CATEGORY_LABEL,
+  DIAGNOSIS_OPTIONS,
+  type DiagnosisCategory,
+} from "@/lib/diagnosis-matrix";
 
 export type InicioViewMode = "first_time" | "active_user";
 
@@ -28,7 +34,19 @@ export function InicioFlowDemoComponent() {
   const [step1NameDone, setStep1NameDone] = useState<boolean>(false);
   const [step2DiagDone, setStep2DiagDone] = useState<boolean>(false);
   const [orchidNameInput, setOrchidNameInput] = useState<string>("Phalaenopsis da Sala");
+  const [orchidSpecies, setOrchidSpecies] = useState<string>("Phalaenopsis");
   const [showNameModal, setShowNameModal] = useState<boolean>(false);
+  const [showDiagWizard, setShowDiagWizard] = useState<boolean>(false);
+
+  // 5-Tab Diagnosis Matrix State
+  const [diagStep, setDiagStep] = useState<number>(1); // 1 to 5 categories, 6 = Veredito
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<DiagnosisCategory, string[]>>({
+    roots: ["Raízes secas ou ocas"],
+    leaves: ["Folhas amareladas"],
+    environment: ["Boa luminosidade indireta"],
+    potAndSubstrate: ["Vaso com furos suficientes"],
+    wateringAndRoutine: ["Rego sempre em dias fixos"],
+  });
 
   // State for Active User Task
   const [day3TaskDone, setDay3TaskDone] = useState<boolean>(false);
@@ -37,8 +55,18 @@ export function InicioFlowDemoComponent() {
     setStep1NameDone(false);
     setStep2DiagDone(false);
     setShowNameModal(false);
+    setShowDiagWizard(false);
+    setDiagStep(1);
     setDay3TaskDone(false);
   };
+
+  const categoriesOrder: DiagnosisCategory[] = [
+    "roots",
+    "leaves",
+    "environment",
+    "potAndSubstrate",
+    "wateringAndRoutine",
+  ];
 
   return (
     <div className="min-h-screen bg-[#F8F5EE] text-[#173D32] font-sans selection:bg-[#155F4E]/10 pb-16">
@@ -91,7 +119,7 @@ export function InicioFlowDemoComponent() {
         </div>
       </header>
 
-      {/* Main Content Area (Simulating Mobile Phone Screen) */}
+      {/* Main Content Area */}
       <main className="mx-auto min-h-[calc(100vh-140px)] max-w-[440px] px-4 py-6">
         <AnimatePresence mode="wait">
           {viewMode === "first_time" ? (
@@ -112,7 +140,7 @@ export function InicioFlowDemoComponent() {
                   Vamos fazer sua orquídea florir juntos!
                 </h1>
                 <p className="mt-1.5 text-xs text-[#173D32]/75 leading-relaxed">
-                  Você adquiriu o <strong>Kit Método 2 Passos (500ml Pronto Uso)</strong>. Complete os 2 passos abaixo para liberar o plano de 21 dias.
+                  Você adquiriu o <strong>Kit Método 2 Passos (500ml Pronto Uso)</strong>. Complete os 2 passos para liberar seu plano de 21 dias.
                 </p>
               </div>
 
@@ -192,17 +220,20 @@ export function InicioFlowDemoComponent() {
                     </div>
                     <div>
                       <div className="text-xs font-extrabold text-[#173D32]">
-                        2. Diagnóstico Rápido de Saúde
+                        2. Exame Visual em 5 Abas
                       </div>
                       <div className="text-[11px] opacity-75">
-                        {step2DiagDone ? "Exame de saúde realizado!" : "3 cliques rápidos para avaliar raízes"}
+                        {step2DiagDone ? "Diagnóstico realizado!" : "Avalia Raízes, Folhas, Vaso, Rega e Luz"}
                       </div>
                     </div>
                   </div>
 
                   {!step2DiagDone && (
                     <button
-                      onClick={() => setStep2DiagDone(true)}
+                      onClick={() => {
+                        setDiagStep(1);
+                        setShowDiagWizard(true);
+                      }}
                       className="rounded-xl bg-[#D35400] px-3.5 py-2 text-xs font-bold text-white shadow-sm hover:bg-[#b84800]"
                     >
                       Fazer Teste
@@ -223,30 +254,33 @@ export function InicioFlowDemoComponent() {
                   <button
                     onClick={() => {
                       if (!step1NameDone) setShowNameModal(true);
-                      else if (!step2DiagDone) setStep2DiagDone(true);
+                      else if (!step2DiagDone) {
+                        setDiagStep(1);
+                        setShowDiagWizard(true);
+                      }
                     }}
                     className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-4 text-xs font-extrabold uppercase tracking-wider text-white shadow-xl shadow-[#155F4E]/25 transition-all hover:bg-[#10483b] active:scale-[0.98]"
                   >
                     <span>
-                      {!step1NameDone ? "Começar Cadastro da Minha Orquídea" : "Fazer Teste de Saúde"}
+                      {!step1NameDone ? "Começar Cadastro da Minha Orquídea" : "Iniciar Exame de Saúde em 5 Abas"}
                     </span>
                     <ArrowRight size={16} />
                   </button>
                 )}
               </div>
 
-              {/* Product Support Footer Card (Confidence Banner) */}
+              {/* Support Footer Card */}
               <div className="rounded-2xl border border-[#155F4E]/15 bg-[#F8F5EE] p-4 text-xs space-y-2">
                 <div className="flex items-center gap-2 font-bold text-[#155F4E]">
                   <ShieldCheck size={16} className="text-[#D35400]" />
                   <span>Acompanhamento Oficial do Kit 500ml Pronto Uso</span>
                 </div>
                 <p className="text-[11px] text-[#173D32]/80 leading-relaxed">
-                  Este aplicativo foi desenvolvido especialmente para guiar a aplicação do <strong>Enraizador Orgânico 500ml</strong> + <strong>Bokashi Líquido 500ml</strong> (sem necessidade de diluição, 1x por semana nas horas frescas).
+                  Desenvolvido para guiar a aplicação semanal do <strong>Enraizador Orgânico 500ml</strong> + <strong>Bokashi Líquido 500ml</strong> (sem diluição, horas frescas).
                 </p>
               </div>
 
-              {/* Name Modal Simulation */}
+              {/* STEP 1: NAME MODAL */}
               {showNameModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
                   <div className="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl space-y-4">
@@ -255,18 +289,45 @@ export function InicioFlowDemoComponent() {
                         <Flower2 size={20} />
                       </div>
                       <div>
-                        <h3 className="font-display text-lg text-[#173D32]">Nome da Orquídea</h3>
+                        <h3 className="font-display text-lg text-[#173D32]">Identifique sua Orquídea</h3>
                         <p className="text-[11px] text-[#173D32]/70">Dê um nome para sua planta</p>
                       </div>
                     </div>
 
-                    <input
-                      type="text"
-                      value={orchidNameInput}
-                      onChange={(e) => setOrchidNameInput(e.target.value)}
-                      placeholder="Ex: Phalaenopsis da Sala..."
-                      className="w-full rounded-2xl border border-[#155F4E]/20 bg-[#F8F5EE] px-4 py-3 text-sm font-semibold text-[#173D32]"
-                    />
+                    <div>
+                      <label className="block text-xs font-bold text-[#173D32] mb-1">
+                        Nome da Planta *
+                      </label>
+                      <input
+                        type="text"
+                        value={orchidNameInput}
+                        onChange={(e) => setOrchidNameInput(e.target.value)}
+                        placeholder="Ex: Phalaenopsis da Sala..."
+                        className="w-full rounded-2xl border border-[#155F4E]/20 bg-[#F8F5EE] px-4 py-3 text-sm font-semibold text-[#173D32]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-[#173D32] mb-1">
+                        Espécie ou Tipo
+                      </label>
+                      <div className="grid grid-cols-2 gap-1.5 text-xs">
+                        {["Phalaenopsis", "Cattleya", "Dendrobium", "Não sei"].map((sp) => (
+                          <button
+                            key={sp}
+                            type="button"
+                            onClick={() => setOrchidSpecies(sp)}
+                            className={`rounded-xl border p-2 text-left font-semibold ${
+                              orchidSpecies === sp
+                                ? "border-[#155F4E] bg-[#155F4E]/10 text-[#155F4E] font-bold"
+                                : "border-[#155F4E]/15 bg-white text-[#173D32]/70"
+                            }`}
+                          >
+                            {sp}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
 
                     <div className="flex gap-2 pt-2">
                       <button
@@ -279,12 +340,200 @@ export function InicioFlowDemoComponent() {
                         onClick={() => {
                           setStep1NameDone(true);
                           setShowNameModal(false);
+                          // Auto open diagnosis next!
+                          setDiagStep(1);
+                          setShowDiagWizard(true);
                         }}
                         className="flex-1 rounded-2xl bg-[#155F4E] py-3 text-xs font-bold text-white shadow-md"
                       >
-                        Salvar Nome
+                        Salvar e Ir para Diagnóstico ➔
                       </button>
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 2: 5-TAB DIAGNOSIS WIZARD MODAL */}
+              {showDiagWizard && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+                  <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl space-y-4">
+                    {diagStep <= 5 ? (
+                      /* Category Steps 1 to 5 */
+                      <div>
+                        <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#D35400]">
+                          <span>Abas de Exame • {diagStep} de 5</span>
+                          <span>{diagStep * 20}%</span>
+                        </div>
+                        <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-[#155F4E]/10">
+                          <div
+                            className="h-full bg-[#D35400] transition-all duration-300"
+                            style={{ width: `${diagStep * 20}%` }}
+                          />
+                        </div>
+
+                        {/* Category Header */}
+                        <div className="mt-4 flex items-center gap-3">
+                          <div className="grid h-10 w-10 place-items-center rounded-2xl bg-[#155F4E]/10 text-[#155F4E]">
+                            <Stethoscope size={20} />
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-[#155F4E]">
+                              Exame Visual para "{orchidNameInput}"
+                            </span>
+                            <h2 className="font-display text-xl text-[#173D32]">
+                              Sinais em: {CATEGORY_LABEL[categoriesOrder[diagStep - 1]]}
+                            </h2>
+                          </div>
+                        </div>
+
+                        <p className="mt-2 text-xs text-[#173D32]/75 leading-relaxed">
+                          Selecione todos os sinais observados atualmente (pode marcar mais de um):
+                        </p>
+
+                        {/* Options List */}
+                        <div className="mt-4 space-y-2 max-h-[260px] overflow-y-auto pr-1">
+                          {DIAGNOSIS_OPTIONS[categoriesOrder[diagStep - 1]].map((opt) => {
+                            const catKey = categoriesOrder[diagStep - 1];
+                            const currentSelected = selectedAnswers[catKey] || [];
+                            const isChecked = currentSelected.includes(opt);
+
+                            const toggle = () => {
+                              setSelectedAnswers((prev) => {
+                                const list = prev[catKey] || [];
+                                const exists = list.includes(opt);
+                                const nextList = exists ? list.filter((i) => i !== opt) : [...list, opt];
+                                return { ...prev, [catKey]: nextList };
+                              });
+                            };
+
+                            return (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={toggle}
+                                className={`flex w-full items-center justify-between rounded-2xl border p-3.5 text-left text-xs font-semibold transition-all ${
+                                  isChecked
+                                    ? "border-[#155F4E] bg-[#155F4E]/10 text-[#155F4E] font-bold shadow-sm"
+                                    : "border-[#155F4E]/15 bg-white text-[#173D32]/80 hover:border-[#155F4E]/30"
+                                }`}
+                              >
+                                <span>{opt}</span>
+                                <div
+                                  className={`grid h-5 w-5 place-items-center rounded-full border ${
+                                    isChecked ? "border-[#155F4E] bg-[#155F4E] text-white" : "border-[#173D32]/30"
+                                  }`}
+                                >
+                                  {isChecked && <CheckCircle2 size={14} />}
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        {/* Navigation Footer */}
+                        <div className="mt-6 flex items-center gap-2 pt-2 border-t border-[#155F4E]/10">
+                          {diagStep > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => setDiagStep(diagStep - 1)}
+                              className="rounded-2xl border border-[#155F4E]/20 px-4 py-3 text-xs font-bold uppercase text-[#173D32]/70"
+                            >
+                              Voltar
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (diagStep < 5) setDiagStep(diagStep + 1);
+                              else setDiagStep(6); // Veredito
+                            }}
+                            className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg"
+                          >
+                            {diagStep === 5 ? "Gerar Veredito & Prescrição" : "Próxima Categoria"} <ArrowRight size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      /* STEP 6: VEREDITO & PRESCRICAO OFICIAL */
+                      <div className="text-center space-y-4">
+                        <div className="mx-auto grid h-14 w-14 place-items-center rounded-3xl bg-[#155F4E] text-white shadow-lg">
+                          <CheckCircle2 size={32} />
+                        </div>
+
+                        <span className="inline-flex items-center gap-1 rounded-full bg-[#155F4E]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[#155F4E]">
+                          <Award size={13} /> Veredito Oficial PlantaeFert
+                        </span>
+
+                        <h2 className="font-display text-2xl text-[#173D32]">
+                          Diagnóstico de "{orchidNameInput}"
+                        </h2>
+
+                        {/* Recommendations summary */}
+                        <div className="rounded-2xl border border-[#155F4E]/15 bg-[#F8F5EE] p-4 text-left space-y-2 text-xs">
+                          <div className="font-bold uppercase tracking-wider text-[#155F4E] flex items-center gap-1.5">
+                            <Stethoscope size={14} /> Recomendações Práticas
+                          </div>
+                          <div className="space-y-1.5 text-[#173D32]/85 text-[11.5px] leading-relaxed">
+                            <div><strong>• O que Fazer:</strong> Aplicar o Enraizador Orgânico 500ml Pronto Uso semanalmente para recuperar raízes secas.</div>
+                            <div><strong>• O que Evitar:</strong> Aplicar sob sol forte (9h às 16h) ou borrifar diretamente nas flores.</div>
+                          </div>
+                        </div>
+
+                        {/* Official Kit Prescriptions Card (PRONTO USO) */}
+                        <div className="rounded-2xl border-2 border-[#155F4E]/20 bg-gradient-to-br from-[#155F4E]/5 to-[#155F4E]/10 p-4 text-left">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#155F4E]">
+                              <ShieldCheck size={16} /> Kit Método 2 Passos (500ml Pronto Uso)
+                            </div>
+                            <span className="rounded-full bg-[#155F4E] px-2 py-0.5 text-[9.5px] font-extrabold text-white uppercase">
+                              Sem Diluição
+                            </span>
+                          </div>
+
+                          <div className="mt-3 space-y-2 text-xs text-[#173D32]">
+                            <div className="rounded-xl bg-white p-3 border border-[#155F4E]/15 shadow-sm space-y-1">
+                              <div className="flex items-center justify-between font-bold text-[#155F4E]">
+                                <span className="flex items-center gap-1.5">
+                                  <Sprout size={16} className="text-[#D35400]" /> 1º Passo: Enraizador 500ml
+                                </span>
+                                <span className="text-[10px] bg-[#D35400]/10 text-[#D35400] px-2 py-0.5 rounded font-extrabold">
+                                  Pronto Uso
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-[#173D32]/80">
+                                Ácidos Húmicos, Fúlvicos e Algas. Borrifar 1x por semana nas raízes/substrato.
+                              </p>
+                            </div>
+
+                            <div className="rounded-xl bg-white p-3 border border-[#155F4E]/15 shadow-sm space-y-1">
+                              <div className="flex items-center justify-between font-bold text-[#155F4E]">
+                                <span className="flex items-center gap-1.5">
+                                  <Leaf size={16} className="text-[#155F4E]" /> 2º Passo: Bokashi Líquido 500ml
+                                </span>
+                                <span className="text-[10px] bg-[#155F4E]/10 text-[#155F4E] px-2 py-0.5 rounded font-extrabold">
+                                  Pronto Uso
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-[#173D32]/80">
+                                Nutrição biológica completa. Aplicar em seguida nas raízes, folhas e substrato.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            setStep2DiagDone(true);
+                            setShowDiagWizard(false);
+                            setViewMode("active_user");
+                          }}
+                          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#155F4E] py-4 text-xs font-extrabold uppercase tracking-wider text-white shadow-xl hover:bg-[#10483b]"
+                        >
+                          <span>Liberar Painel do Dia 1 para "{orchidNameInput}"</span>
+                          <ChevronRight size={18} />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -319,7 +568,7 @@ export function InicioFlowDemoComponent() {
                       {orchidNameInput || "Phalaenopsis da Sala"}
                     </h2>
                     <p className="mt-1 text-xs opacity-80">
-                      Phalaenopsis • Varanda / Janela (Luz Indireta)
+                      {orchidSpecies} • Luz Indireta
                     </p>
                   </div>
                   <div className="rounded-2xl bg-white/10 p-3 text-center backdrop-blur-sm">
@@ -329,7 +578,7 @@ export function InicioFlowDemoComponent() {
                 </div>
               </div>
 
-              {/* TODAY'S MISSION CARD (DAY 3 - OFFICIAL APPLICATION RULE) */}
+              {/* TODAY'S MISSION CARD (DAY 3) */}
               <div className="rounded-3xl border border-[#155F4E]/15 bg-white p-6 shadow-xl space-y-3">
                 <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#D35400]">
                   <span>Fase I: Enraizar • Hoje (Dia 3)</span>
