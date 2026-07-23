@@ -1,10 +1,9 @@
 import brandLogoDark from "@/assets/brand-logo-plantaefert.png";
-import brandLogoLight from "@/assets/brand-logo-plantaefert-light.png";
+import brandLogoLight from "@/assets/logo-plantaefert-light.png";
 
 interface PlantaefertLogoProps {
-  variant?: "dark" | "light"; // "dark" text for light bg, "light" text for dark bg
+  variant?: "dark" | "light";
   className?: string;
-  height?: number | string;
 }
 
 export function PlantaefertLogo({
@@ -16,8 +15,8 @@ export function PlantaefertLogo({
   return (
     <img
       src={logoSrc}
-      alt="PlantaeFert Nutrição Vegetal"
-      className={`${className} ${variant === "dark" ? "mix-blend-multiply" : ""}`}
+      alt="PlantaeFert — Nutrição Vegetal"
+      className={className}
       loading="eager"
       decoding="async"
     />
