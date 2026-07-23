@@ -22,6 +22,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import kitMetodo from "@/assets/kit-metodo-app.jpg";
 import logoPlantaefertLight from "@/assets/logo-plantaefert-light.png";
 
+import { OnboardingDemosComponent } from "@/components/OnboardingDemos";
+
 export const Route = createFileRoute("/opcoes-metodo")({
   head: () => ({
     meta: [
@@ -33,7 +35,7 @@ export const Route = createFileRoute("/opcoes-metodo")({
 });
 
 function OpcoesMetodoPage() {
-  const [activeTab, setActiveTab] = useState<"opcao1" | "opcao2" | "opcao3" | "combo">("combo");
+  const [activeTab, setActiveTab] = useState<"opcao1" | "opcao2" | "opcao3" | "combo" | "onboarding_demos">("combo");
 
   return (
     <div className="min-h-screen bg-[#F8F5EE] text-[#155F4E]">
@@ -104,12 +106,27 @@ function OpcoesMetodoPage() {
               >
                 ★ Combo Recomendado
               </button>
+              <button
+                onClick={() => setActiveTab("onboarding_demos")}
+                className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
+                  activeTab === "onboarding_demos"
+                    ? "bg-[#D35400] text-white shadow-md font-extrabold"
+                    : "text-[#F8F5EE]/80 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                🧪 Modelos de Onboarding (3 Opções)
+              </button>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content Area */}
+      {activeTab === "onboarding_demos" ? (
+        <div className="py-4">
+          <OnboardingDemosComponent />
+        </div>
+      ) : (
       <main className="py-10">
         <div className="mx-auto max-w-7xl px-4 md:px-8 mb-8">
           <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -667,6 +684,7 @@ function OpcoesMetodoPage() {
           )}
         </AnimatePresence>
       </main>
+      )}
     </div>
   );
 }
