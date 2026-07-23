@@ -26,6 +26,8 @@ import { OnboardingDemosComponent } from "@/components/OnboardingDemos";
 
 import { InicioFlowDemoComponent } from "@/components/InicioFlowDemo";
 
+import { OfficialEditorialFlowComponent } from "@/components/OfficialEditorialFlow";
+
 export const Route = createFileRoute("/opcoes-metodo")({
   head: () => ({
     meta: [
@@ -37,7 +39,7 @@ export const Route = createFileRoute("/opcoes-metodo")({
 });
 
 function OpcoesMetodoPage() {
-  const [activeTab, setActiveTab] = useState<"opcao1" | "opcao2" | "opcao3" | "combo" | "onboarding_demos" | "inicio_demo">("inicio_demo");
+  const [activeTab, setActiveTab] = useState<"opcao1" | "opcao2" | "opcao3" | "combo" | "onboarding_demos" | "inicio_demo" | "editorial_flow">("editorial_flow");
 
   return (
     <div className="min-h-screen bg-[#F8F5EE] text-[#155F4E]">
@@ -109,14 +111,24 @@ function OpcoesMetodoPage() {
                 ★ Combo Recomendado
               </button>
               <button
-                onClick={() => setActiveTab("inicio_demo")}
+                onClick={() => setActiveTab("editorial_flow")}
                 className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
-                  activeTab === "inicio_demo"
+                  activeTab === "editorial_flow"
                     ? "bg-[#D35400] text-white shadow-md font-extrabold"
                     : "text-[#F8F5EE]/80 hover:bg-white/10 hover:text-white"
                 }`}
               >
-                📱 Demonstração Tela /inicio (1º Acesso)
+                📋 Inventário Editorial (3 Passos Oficiais)
+              </button>
+              <button
+                onClick={() => setActiveTab("inicio_demo")}
+                className={`px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
+                  activeTab === "inicio_demo"
+                    ? "bg-[#155F4E] text-white shadow-md font-extrabold"
+                    : "text-[#F8F5EE]/80 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                📱 Demonstração Tela /inicio
               </button>
               <button
                 onClick={() => setActiveTab("onboarding_demos")}
@@ -126,7 +138,7 @@ function OpcoesMetodoPage() {
                     : "text-[#F8F5EE]/80 hover:bg-white/10 hover:text-white"
                 }`}
               >
-                🧪 Modelos de Onboarding
+                🧪 Biblioteca de Modelos
               </button>
             </div>
           </div>
@@ -134,7 +146,11 @@ function OpcoesMetodoPage() {
       </header>
 
       {/* Main Content Area */}
-      {activeTab === "inicio_demo" ? (
+      {activeTab === "editorial_flow" ? (
+        <div className="py-4">
+          <OfficialEditorialFlowComponent />
+        </div>
+      ) : activeTab === "inicio_demo" ? (
         <div className="py-4">
           <InicioFlowDemoComponent />
         </div>
