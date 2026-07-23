@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import kitMetodo from "@/assets/kit-metodo-app.jpg";
+import logoPlantaefertLight from "@/assets/logo-plantaefert-light.png";
 
 export const Route = createFileRoute("/opcoes-metodo")({
   head: () => ({
@@ -40,18 +41,25 @@ function OpcoesMetodoPage() {
       <header className="sticky top-0 z-50 bg-[#155F4E] text-[#F8F5EE] shadow-xl border-b border-white/10">
         <div className="mx-auto max-w-7xl px-4 py-4 md:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded bg-[#D35400] text-white font-mono text-[10px] uppercase font-bold tracking-widest">
-                  Ficha Oficial PlantaeFert
-                </span>
-                <span className="text-xs text-[#F8F5EE]/70 font-serif italic">
-                  Visualização das propostas ajustadas com as especificações oficiais
-                </span>
+            <div className="flex items-center gap-4">
+              <img
+                src={logoPlantaefertLight}
+                alt="PlantaeFert Nutrição Vegetal"
+                className="h-9 w-auto object-contain shrink-0"
+              />
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-[#D35400] text-white font-mono text-[10px] uppercase font-bold tracking-widest">
+                    Ficha Oficial PlantaeFert
+                  </span>
+                  <span className="text-xs text-[#F8F5EE]/70 font-serif italic hidden sm:inline">
+                    Visualização das propostas ajustadas com as especificações oficiais
+                  </span>
+                </div>
+                <h1 className="font-serif text-lg md:text-xl font-bold text-white mt-0.5">
+                  Kit Bokashi Líquido 500ml + Enraizador Orgânico 500ml (Pronto Uso)
+                </h1>
               </div>
-              <h1 className="font-serif text-xl font-bold text-white mt-1">
-                Kit Bokashi Líquido 500ml + Enraizador Orgânico 500ml (Pronto Uso)
-              </h1>
             </div>
 
             {/* Selector Buttons */}
