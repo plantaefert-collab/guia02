@@ -22,6 +22,7 @@ import { Route as OpcoesMetodoRouteImport } from './routes/opcoes-metodo'
 import { Route as PlanoRouteImport } from './routes/plano'
 import { Route as Protocolo21DiasRouteImport } from './routes/protocolo-21-dias'
 import { Route as ResumoRouteImport } from './routes/resumo'
+import { Route as TesteOnboardingRouteImport } from './routes/teste-onboarding'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -88,6 +89,11 @@ const ResumoRoute = ResumoRouteImport.update({
   path: '/resumo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TesteOnboardingRoute = TesteOnboardingRouteImport.update({
+  id: '/teste-onboarding',
+  path: '/teste-onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/plano': typeof PlanoRoute
   '/protocolo-21-dias': typeof Protocolo21DiasRoute
   '/resumo': typeof ResumoRoute
+  '/teste-onboarding': typeof TesteOnboardingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/plano': typeof PlanoRoute
   '/protocolo-21-dias': typeof Protocolo21DiasRoute
   '/resumo': typeof ResumoRoute
+  '/teste-onboarding': typeof TesteOnboardingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,6 +142,7 @@ export interface FileRoutesById {
   '/plano': typeof PlanoRoute
   '/protocolo-21-dias': typeof Protocolo21DiasRoute
   '/resumo': typeof ResumoRoute
+  '/teste-onboarding': typeof TesteOnboardingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
     | '/plano'
     | '/protocolo-21-dias'
     | '/resumo'
+    | '/teste-onboarding'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/plano'
     | '/protocolo-21-dias'
     | '/resumo'
+    | '/teste-onboarding'
   id:
     | '__root__'
     | '/'
@@ -181,6 +192,7 @@ export interface FileRouteTypes {
     | '/plano'
     | '/protocolo-21-dias'
     | '/resumo'
+    | '/teste-onboarding'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -197,6 +209,7 @@ export interface RootRouteChildren {
   PlanoRoute: typeof PlanoRoute
   Protocolo21DiasRoute: typeof Protocolo21DiasRoute
   ResumoRoute: typeof ResumoRoute
+  TesteOnboardingRoute: typeof TesteOnboardingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -292,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResumoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/teste-onboarding': {
+      id: '/teste-onboarding'
+      path: '/teste-onboarding'
+      fullPath: '/teste-onboarding'
+      preLoaderRoute: typeof TesteOnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -309,6 +329,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlanoRoute: PlanoRoute,
   Protocolo21DiasRoute: Protocolo21DiasRoute,
   ResumoRoute: ResumoRoute,
+  TesteOnboardingRoute: TesteOnboardingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
