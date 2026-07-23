@@ -23,7 +23,7 @@ import {
 import {
   CATEGORY_LABEL,
   DIAGNOSIS_OPTIONS,
-  DIAGNOSIS_GUIDANCE,
+  
   computeDiagnosisResult,
   type DiagnosisCategory,
   type DiagnosisGuidance,
@@ -109,7 +109,14 @@ export function OfficialEditorialFlowComponent() {
   };
 
   // Compute Diagnosis Result using matrix
-  const resultData = computeDiagnosisResult(selectedAnswers);
+  const rawResult = computeDiagnosisResult(selectedAnswers, 0);
+  const resultData = {
+    priorityItems: rawResult.priorities,
+    adjustmentItems: rawResult.adjustments,
+    favorableItems: rawResult.favorable,
+    insufficientItems: rawResult.insufficientInformation,
+    trackingPoints: rawResult.trackingPoints,
+  };
   const totalObservedCount = Object.values(selectedAnswers).reduce(
     (sum, list) => sum + list.length,
     0
@@ -630,7 +637,7 @@ export function OfficialEditorialFlowComponent() {
                 </p>
 
                 <div className="space-y-2">
-                  {resultData.trackingHighlights.slice(0, 5).map((track, i) => (
+                  {resultData.trackingPoints.slice(0, 5).map((track: string, i: number) => (
                     <div
                       key={i}
                       className="flex items-center gap-2.5 rounded-xl bg-white p-3 text-xs font-bold text-[#173D32] border border-[#155F4E]/15"
