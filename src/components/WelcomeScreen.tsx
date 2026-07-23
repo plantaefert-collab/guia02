@@ -14,6 +14,7 @@ import type { ReactNode } from "react";
 import { PlantaefertLogo } from "@/components/PlantaefertLogo";
 import { getProtocolDay, getProtocolPhase } from "@/lib/protocol-plan";
 import welcomeOrchid from "@/assets/welcome-orchid.jpg";
+import { useProtocolStore } from "@/lib/protocol-store";
 
 export type WelcomeTab = "inicio" | "orquidea" | "plano" | "diagnostico" | "diario" | "aprender" | "resumo" | "metodo";
 
