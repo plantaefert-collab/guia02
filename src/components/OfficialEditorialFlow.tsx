@@ -109,7 +109,14 @@ export function OfficialEditorialFlowComponent() {
   };
 
   // Compute Diagnosis Result using matrix
-  const resultData = computeDiagnosisResult(selectedAnswers);
+  const rawResult = computeDiagnosisResult(selectedAnswers, 0);
+  const resultData = {
+    priorityItems: rawResult.priorities,
+    adjustmentItems: rawResult.adjustments,
+    favorableItems: rawResult.favorable,
+    insufficientItems: rawResult.insufficientInformation,
+    trackingPoints: rawResult.trackingPoints,
+  };
   const totalObservedCount = Object.values(selectedAnswers).reduce(
     (sum, list) => sum + list.length,
     0
