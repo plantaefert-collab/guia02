@@ -102,6 +102,7 @@ import {
 } from "@/lib/protocol-cache";
 import { saveProgressRemote } from "@/lib/protocol-cloud";
 import welcomeOrchid from "@/assets/welcome-orchid.jpg";
+import kitMetodo from "@/assets/kit-metodo-app.jpg";
 import { QuickTour } from "@/components/QuickTour";
 import { exportProtocolPDF, previewProtocolPDF, protocolPdfFilename } from "@/lib/pdf-export";
 import { WelcomeScreen } from "@/components/WelcomeScreen";
@@ -2311,7 +2312,7 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
           <div className="group relative overflow-hidden rounded-2xl border-2 border-primary/40 bg-gradient-to-br from-primary/15 via-primary/8 to-primary/[0.03] shadow-lg shadow-primary/10 transition-all hover:border-primary/60 hover:shadow-primary/20">
             <div className="relative w-full overflow-hidden">
               <img
-                src={kitMetodo.url}
+                src={kitMetodo}
                 alt="Kit Método 2 Passos"
                 loading="lazy"
                 className="h-44 w-full object-cover sm:h-52 md:h-60"
