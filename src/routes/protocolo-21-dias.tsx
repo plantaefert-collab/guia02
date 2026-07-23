@@ -234,7 +234,7 @@ export function ProtocoloShell({ initialTab }: { initialTab?: Tab } = {}) {
       <div className="min-h-screen bg-[#F8F5EE] relative flex flex-col items-center justify-center p-6 text-center overflow-hidden">
         {/* Marca d'água botânica */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.03] flex items-center justify-center">
-          <svg width="400" height="400" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#173D32]">
+          <svg width="400" height="400" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#155F4E]">
              <path d="M50 10C50 10 40 30 40 50C40 70 50 90 50 90M50 10C50 10 60 30 60 50C60 70 50 90 50 90M20 50C20 50 40 45 50 50C60 55 80 50 80 50" stroke="currentColor" strokeWidth="0.5" strokeLinecap="round"/>
              <circle cx="50" cy="50" r="2" fill="currentColor"/>
           </svg>
@@ -243,14 +243,14 @@ export function ProtocoloShell({ initialTab }: { initialTab?: Tab } = {}) {
         <motion.div 
           animate={{ rotate: 360 }} 
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          className="mb-6 text-[#173D32] relative z-10"
+          className="mb-6 text-[#155F4E] relative z-10"
         >
-          <div className="p-3 bg-white/50 backdrop-blur-sm rounded-full border border-[#173D32]/10 shadow-sm">
+          <div className="p-3 bg-white/50 backdrop-blur-sm rounded-full border border-[#155F4E]/10 shadow-sm">
             <Loader2 size={32} strokeWidth={1.5} />
           </div>
         </motion.div>
-        <div className="font-display text-2xl text-[#173D32] relative z-10 mb-2">Preparando sua jornada...</div>
-        <div className="text-[10px] text-[#173D32]/50 font-bold uppercase tracking-[0.2em] relative z-10">PlantaeFert Nutrição Vegetal</div>
+        <div className="font-display text-2xl text-[#155F4E] relative z-10 mb-2">Preparando sua jornada...</div>
+        <div className="text-[10px] text-[#155F4E]/50 font-bold uppercase tracking-[0.2em] relative z-10">PlantaeFert Nutrição Vegetal</div>
       </div>
     );
   }
@@ -284,15 +284,15 @@ export function ProtocoloShell({ initialTab }: { initialTab?: Tab } = {}) {
           },
           classNames: {
             toast: "border shadow-lg",
-            success: "bg-[#F8F5EE] border-[#173D32]/20 text-[#173D32]",
-            info: "bg-[#FDF2F8] border-[#D946EF]/20 text-[#D946EF]",
+            success: "bg-[#F8F5EE] border-[#155F4E]/20 text-[#155F4E]",
+            info: "bg-[#FDF2F8] border-[#D35400]/20 text-[#D35400]",
             error: "bg-destructive/5 border-destructive/20 text-destructive",
             warning: "bg-yellow-50 border-yellow-200 text-yellow-800",
           }
         }}
         icons={{
-          success: <Sprout size={18} className="text-[#173D32]" />,
-          info: <Sparkles size={18} className="text-[#D946EF]" />,
+          success: <Sprout size={18} className="text-[#155F4E]" />,
+          info: <Sparkles size={18} className="text-[#D35400]" />,
           error: <AlertCircle size={18} className="text-destructive" />,
           warning: <AlertTriangle size={18} className="text-yellow-600" />,
         }}
@@ -514,7 +514,7 @@ function PhaseProgressBar({ currentDay }: { currentDay: number }) {
   const phaseInfo = useMemo(() => {
     const day = Math.min(21, Math.max(1, currentDay));
     if (day <= 7) return { label: "Fase 1: Dias 1–7", progress: (day / 7) * 100, color: "bg-primary" };
-    if (day <= 14) return { label: "Fase 2: Dias 8–14", progress: ((day - 7) / 7) * 100, color: "bg-[#D946EF]" }; // matching accent magenta
+    if (day <= 14) return { label: "Fase 2: Dias 8–14", progress: ((day - 7) / 7) * 100, color: "bg-[#D35400]" }; // matching accent magenta
     return { label: "Fase 3: Dias 15–21", progress: ((day - 14) / 7) * 100, color: "bg-accent" };
   }, [currentDay]);
 
@@ -2798,7 +2798,7 @@ function PlanoTab({ actorId, setTab, onPreviewDay, setStatus }: PlanoTabProps) {
                   particleCount: 150,
                   spread: 70,
                   origin: { y: 0.6 },
-                  colors: ["#D946EF", "#173D32", "#F8F5EE", "#FDF2F8"],
+                  colors: ["#D35400", "#155F4E", "#F8F5EE", "#FDF2F8"],
                 });
                 toast.success(
                   day === 7

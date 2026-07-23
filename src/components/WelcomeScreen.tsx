@@ -218,7 +218,7 @@ export function WelcomeScreen({
           >
             <div className="flex items-center justify-between border-b border-black/5 px-5 py-3.5">
               <span className="text-[11px] font-bold uppercase tracking-widest opacity-60">Próxima ação</span>
-              <div className="flex h-1.5 w-1.5 animate-pulse rounded-full bg-[#D946EF]" />
+              <div className="flex h-1.5 w-1.5 animate-pulse rounded-full bg-[#D35400]" />
             </div>
             <div className="grid grid-cols-3 divide-x divide-black/5">
               <button
@@ -226,7 +226,7 @@ export function WelcomeScreen({
                 className="flex flex-col items-center gap-1.5 py-4 transition-colors hover:bg-white/40 active:scale-95"
               >
                 <div className="rounded-full bg-white p-2 shadow-sm">
-                  <Stethoscope size={16} className="text-[#173D32]" />
+                  <Stethoscope size={16} className="text-[#155F4E]" />
                 </div>
                 <span className="text-[10px] font-bold uppercase tracking-tight">Exame</span>
               </button>
@@ -235,7 +235,7 @@ export function WelcomeScreen({
                 className="flex flex-col items-center gap-1.5 py-4 transition-colors hover:bg-white/40 active:scale-95"
               >
                 <div className="rounded-full bg-white p-2 shadow-sm">
-                  <Calendar size={16} className="text-[#173D32]" />
+                  <Calendar size={16} className="text-[#155F4E]" />
                 </div>
                 <span className="text-[10px] font-bold uppercase tracking-tight">Diário</span>
               </button>
@@ -244,7 +244,7 @@ export function WelcomeScreen({
                 className="flex flex-col items-center gap-1.5 py-4 transition-colors hover:bg-white/40 active:scale-95"
               >
                 <div className="rounded-full bg-white p-2 shadow-sm">
-                  <BookOpen size={16} className="text-[#173D32]" />
+                  <BookOpen size={16} className="text-[#155F4E]" />
                 </div>
                 <span className="text-[10px] font-bold uppercase tracking-tight">Aprender</span>
               </button>
@@ -285,7 +285,7 @@ export function WelcomeScreen({
               {onRegisterOrchid && (
                 <button
                   onClick={onRegisterOrchid}
-                  className="flex items-center justify-center gap-2 rounded-full border border-[#173D32]/10 px-6 py-3.5 text-[14px] font-medium transition-colors hover:bg-white/40"
+                  className="flex items-center justify-center gap-2 rounded-full border border-[#155F4E]/10 px-6 py-3.5 text-[14px] font-medium transition-colors hover:bg-white/40"
                   style={{ color: "var(--color-plantae-green)" }}
                 >
                   <Sprout size={16} /> Cadastro da orquídea
