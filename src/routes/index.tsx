@@ -9,8 +9,6 @@ import { resolvePostAuthDestination } from "@/lib/auth-destination";
 import { ChevronRight, LogIn, Flower2 } from "lucide-react";
 import welcomeOrchid from "@/assets/hero-plantaefert.jpg";
 import kitMetodo from "@/assets/kit-metodo-app.jpg";
-import logoPlantaefertAsset from "@/assets/plantaefert-logo.png.asset.json";
-const logoPlantaefert = logoPlantaefertAsset.url;
 import { useAuthBootstrap } from "@/hooks/use-auth-bootstrap";
 
 export const Route = createFileRoute("/")({
@@ -80,13 +78,9 @@ function HomePage() {
       <header className="sticky top-0 z-30 border-b border-[#173D32]/10 bg-[#F8F5EE]/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:h-20 md:px-10">
           <Link to="/" className="flex shrink-0 items-center">
-            <img
-              src={logoPlantaefert}
-              alt="PlantaeFert — Nutrição Vegetal"
-              className="h-14 w-auto object-contain md:h-16"
-              width={160}
-              height={44}
-            />
+            <span className="font-serif text-2xl font-semibold tracking-wider text-[#173D32] hover:text-[#D946EF] transition-colors">
+              PlantaeFert
+            </span>
           </Link>
           <nav className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] font-semibold sm:gap-6">
             <Link to={isLoggedIn ? "/metodo" : "/auth"} className="hidden text-[#173D32]/70 hover:text-[#D946EF] transition sm:inline">
