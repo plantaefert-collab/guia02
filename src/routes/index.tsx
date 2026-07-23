@@ -34,21 +34,34 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const BENEFITS = [
+const ETAPAS = [
   {
-    n: "01.",
-    title: "Diagnóstico Guiado",
-    body: "Responda perguntas simples e receba um plano personalizado para o estado atual da sua orquídea.",
+    n: "01",
+    title: "Diagnóstico",
+    subtitle: "Sinal de Alerta",
+    body: "Identifique se sua orquídea está sem flores, com folhas amarelas ou raízes secas em menos de 2 minutos.",
+    isAlert: true,
   },
   {
-    n: "02.",
-    title: "Plano de 21 Dias",
-    body: "Checklists diários, aplicações e lembretes — sem precisar decorar receita nem improvisar rotina.",
+    n: "02",
+    title: "Enraizamento",
+    subtitle: "Passo I",
+    body: "Fortaleça e multiplique as raízes com o Enraizador Forte para dar base a novas florações.",
+    isAlert: false,
   },
   {
-    n: "03.",
-    title: "Diário & Progresso",
-    body: "Registre notas, fotos e acompanhe a evolução dia após dia, com marcos claros ao longo da jornada.",
+    n: "03",
+    title: "Nutrição",
+    subtitle: "Passo II",
+    body: "Nutra sua orquídea com o Bokashi Premium para prepará-la para a floração no ritmo certo.",
+    isAlert: false,
+  },
+  {
+    n: "04",
+    title: "Evolução",
+    subtitle: "Diário de 21 Dias",
+    body: "Acompanhe o checklist de regas, aplicações e registre fotos da evolução da sua orquídea.",
+    isAlert: false,
   },
 ];
 
@@ -198,19 +211,55 @@ function HomePage() {
       </section>
 
       {/* Benefícios */}
-      <section className="border-t border-[#155F4E]/5 bg-[#F8F5EE] px-8 py-24 md:px-24 md:py-32">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 md:grid-cols-3 md:gap-20">
-          {BENEFITS.map((b) => (
-            <div key={b.title} className="group flex flex-col">
-              <div className="mb-6 flex items-baseline gap-4">
-                <span className="font-serif text-3xl italic text-[#D35400]">{b.n}</span>
-                <h3 className="border-b border-transparent font-serif text-2xl font-normal transition-all group-hover:border-[#155F4E]/10">
-                  {b.title}
-                </h3>
+      <section className="border-t border-[#155F4E]/5 bg-[#F8F5EE] px-4 py-20 md:px-10 md:py-28">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 text-center">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#155F4E]/60">
+              Jornada de Cuidado
+            </span>
+            <h2 className="mt-3 font-serif text-3xl md:text-4xl text-[#155F4E]">
+              O Caminho para uma Orquídea Florida
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {ETAPAS.map((e) => (
+              <div
+                key={e.title}
+                className={`group flex flex-col justify-between p-8 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                  e.isAlert
+                    ? "border-[#D35400]/20 bg-[#D35400]/5 hover:bg-[#D35400]/10 hover:border-[#D35400]/40"
+                    : "border-[#155F4E]/20 bg-[#155F4E]/5 hover:bg-[#155F4E]/10 hover:border-[#155F4E]/40"
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span
+                      className={`font-serif text-2xl italic font-semibold ${
+                        e.isAlert ? "text-[#D35400]" : "text-[#155F4E]"
+                      }`}
+                    >
+                      {e.n}.
+                    </span>
+                    <span
+                      className={`text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${
+                        e.isAlert
+                          ? "bg-white/60 border-[#D35400]/20 text-[#D35400]"
+                          : "bg-white/60 border-[#155F4E]/20 text-[#155F4E]"
+                      }`}
+                    >
+                      {e.subtitle}
+                    </span>
+                  </div>
+                  <h3 className="font-serif text-xl font-normal mb-3 text-[#155F4E]">
+                    {e.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-[#155F4E]/80">
+                    {e.body}
+                  </p>
+                </div>
               </div>
-              <p className="text-lg leading-relaxed text-[#155F4E]/70">{b.body}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
