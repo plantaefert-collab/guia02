@@ -1,0 +1,250 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-display: "DM Serif Display", serif;
+  --font-sans: "Fira Sans", sans-serif;
+  --color-plantae-cream: #F8F5EE;
+  --color-plantae-deep: #173D32;
+  --color-plantae-green: #173D32;
+  --color-plantae-soft: #F8F5EE;
+  --color-plantae-magenta: #D946EF;
+  --color-plantae-rose: #FDF2F8;
+  --color-plantae-lilac: #F5F3FF;
+  --color-plantae-ink: #173D32;
+  --color-plantae-mute: #4B5D67;
+}
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-lilac: var(--lilac);
+  --color-lilac-foreground: var(--lilac-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: oklch(0.975 0.005 85);
+  --foreground: oklch(0.25 0.03 160);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.25 0.03 160);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.25 0.03 160);
+  --primary: oklch(0.25 0.05 160);
+  --primary-foreground: oklch(0.98 0.01 85);
+  --secondary: oklch(0.95 0.01 85);
+  --secondary-foreground: oklch(0.25 0.05 160);
+  --muted: oklch(0.94 0.01 85);
+  --muted-foreground: oklch(0.45 0.03 160);
+  --accent: oklch(0.65 0.2 330);
+  --accent-foreground: oklch(0.98 0.01 330);
+  --lilac: oklch(0.96 0.02 330);
+  --lilac-foreground: oklch(0.4 0.15 330);
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(0.98 0.01 25);
+  --border: oklch(0.9 0.01 160);
+  --input: oklch(0.9 0.01 160);
+  --ring: oklch(0.25 0.05 160);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.98 0.005 85);
+  --sidebar-foreground: oklch(0.25 0.03 160);
+  --sidebar-primary: oklch(0.25 0.05 160);
+  --sidebar-primary-foreground: oklch(0.98 0.01 85);
+  --sidebar-accent: oklch(0.94 0.01 85);
+  --sidebar-accent-foreground: oklch(0.25 0.05 160);
+  --sidebar-border: oklch(0.9 0.01 160);
+  --sidebar-ring: oklch(0.25 0.05 160);
+}
+
+.dark {
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.208 0.042 265.755);
+  --sidebar-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-accent: oklch(0.279 0.041 260.031);
+  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.551 0.027 264.364);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-blend-mode: overlay;
+    opacity: 0.98;
+  }
+}
+
+/* ===== Modo Alto Contraste global =====
+ * Reescreve tokens semânticos para maximizar contraste texto/fundo,
+ * remove ruído/gradientes e reforça o foco visível.
+ */
+.high-contrast {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.1 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.1 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.1 0 0);
+  --primary: oklch(0.15 0.05 160);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.95 0 0);
+  --secondary-foreground: oklch(0.1 0 0);
+  --muted: oklch(0.92 0 0);
+  --muted-foreground: oklch(0.25 0 0);
+  --accent: oklch(0.45 0.25 330);
+  --accent-foreground: oklch(1 0 0);
+  --lilac: oklch(0.95 0.04 330);
+  --lilac-foreground: oklch(0.2 0.15 330);
+  --destructive: oklch(0.45 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.2 0 0);
+  --input: oklch(0.2 0 0);
+  --ring: oklch(0.35 0.2 260);
+}
+
+.high-contrast body {
+  background-image: none !important;
+  background-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+
+.high-contrast *:focus-visible {
+  outline: 3px solid oklch(0.35 0.2 260) !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+}
+
+.high-contrast a,
+.high-contrast button {
+  text-underline-offset: 3px;
+}
+
+.high-contrast a:not([class*="rounded"]):hover {
+  text-decoration: underline;
+}
+
+/* Garantir que portais Radix (Dialog, Drawer, Sheet, Popover, Tooltip,
+ * DropdownMenu, Toast) herdem os tokens de alto contraste. Radix renderiza
+ * para document.body, então os custom properties cascateiam via <html>,
+ * mas reforçamos aqui overlays translúcidos e badges do diagnóstico. */
+.high-contrast [data-radix-popper-content-wrapper],
+.high-contrast [role="dialog"],
+.high-contrast [role="alertdialog"],
+.high-contrast [data-vaul-drawer],
+.high-contrast [data-sonner-toaster],
+.high-contrast [data-radix-portal] {
+  color: oklch(0.1 0 0) !important;
+}
+
+.high-contrast [data-radix-dialog-overlay],
+.high-contrast [data-vaul-overlay],
+.high-contrast [data-state="open"][class*="overlay"] {
+  background-color: oklch(0 0 0 / 0.75) !important;
+  backdrop-filter: none !important;
+}
+
+/* Badges de diagnóstico e "Dia Crítico" — força contraste sólido */
+.high-contrast [class*="badge"],
+.high-contrast .badge,
+.high-contrast [data-badge] {
+  border-width: 2px !important;
+  font-weight: 600 !important;
+}
+
+/* Estados disabled/muted permanecem legíveis */
+.high-contrast [aria-disabled="true"],
+.high-contrast :disabled {
+  opacity: 0.7 !important;
+}
