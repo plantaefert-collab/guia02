@@ -2811,7 +2811,9 @@ function PlanoTab({ actorId, setTab, onPreviewDay, setStatus }: PlanoTabProps) {
             return (
               <motion.button
                 key={item}
+                data-checklist-item
                 whileTap={{ scale: 0.98 }}
+
                 onClick={() => {
                   toggleChecklist(day, item, actorId);
                   if (!checked) playPopSound();
