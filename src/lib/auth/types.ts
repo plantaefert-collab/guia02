@@ -10,7 +10,7 @@ export type AuthBootstrapStatus =
   | "diagnosing"
   | "reviewing_diagnosis_result"
   | "ready" 
-
+  | "onboarding"
   | "auth_error";
 
 export interface UserProfile {
