@@ -33,6 +33,7 @@ interface OnboardingFlowProps {
 export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
   const { state, updatePlant, toggleDiagnosis, saveDiagnosisResult, setOnboarded, setOnboardingStep } = useProtocolStore();
   const [step, setStep] = useState<OnboardingStep>((state.onboardingStep as OnboardingStep) || "welcome");
+  const [direction, setDirection] = useState(0);
   const [busy, setBusy] = useState(false);
 
   const plant = state.plant;
@@ -111,13 +112,15 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
 
       <main className="flex-1 overflow-y-auto px-6 py-8">
         <div className="mx-auto max-w-lg">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" custom={direction}>
             {step === "welcome" && (
               <motion.div
                 key="welcome"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
                 className="text-center"
               >
                 <div className="mb-6 flex justify-center">
@@ -156,9 +159,11 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
             {step === "plant_info" && (
               <motion.div
                 key="plant_info"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
               >
                 <h2 className="font-display text-2xl text-primary">1. Cadastro da Orquídea</h2>
                 <p className="mt-1 text-sm text-muted-foreground">Dê uma identidade para sua planta.</p>
@@ -215,9 +220,11 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
             {step === "diagnosis_intro" && (
               <motion.div
                 key="diagnosis_intro"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
                 className="text-center"
               >
                 <div className="mb-6 flex justify-center">
@@ -245,9 +252,11 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
             {(step === "diagnosis_roots" || step === "diagnosis_leaves" || step === "diagnosis_env") && (
               <motion.div
                 key={step}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
@@ -294,9 +303,11 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
             {step === "summary" && (
               <motion.div
                 key="summary"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
                 className="text-center"
               >
                 <div className="mb-6 flex justify-center">
@@ -340,6 +351,10 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
           </AnimatePresence>
         </div>
       </main>
+ 
+      <style dangerouslySetInnerHTML={{ __html: `
+        .selection\\:bg-accent\\/20 ::selection { background-color: rgba(var(--accent), 0.2); }
+      `}} />
 
       {/* Footer Navigation */}
       <footer className="border-t border-border bg-background p-6">
@@ -365,3 +380,38 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
     </div>
   );
 }
+
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? "50%" : "-50%",
+    opacity: 0,
+    scale: 0.98,
+    filter: "blur(4px)"
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: {
+      x: { type: "spring", stiffness: 400, damping: 40 },
+      opacity: { duration: 0.25 },
+      scale: { duration: 0.3 },
+      filter: { duration: 0.2 }
+    }
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? "50%" : "-50%",
+    opacity: 0,
+    scale: 0.98,
+    filter: "blur(4px)",
+    transition: {
+      x: { type: "spring", stiffness: 400, damping: 40 },
+      opacity: { duration: 0.2 },
+      scale: { duration: 0.3 },
+      filter: { duration: 0.2 }
+    }
+  })
+};
