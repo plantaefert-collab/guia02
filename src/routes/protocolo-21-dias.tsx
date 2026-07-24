@@ -1977,7 +1977,6 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
 
   return (
     <div className="space-y-4">
-      {/* Blocos contextuais (Início, Cadastro, Diagnóstico) */}
       {(() => {
         const meta = getProtocolDay(day);
         const today = state.days[day] ?? { checklist: {}, note: "", completed: false };
@@ -1993,81 +1992,68 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
         const applicationPending = isApplicationDay && !today.applicationDone;
         const protocolFinished = day >= 21 && allDone;
 
-        type Ctx = {
-          eyebrow: string;
-          title: string;
-          desc: string;
-          cta: { label: string; icon: ReactNode; onClick: () => void };
-        };
-
-        let ctx: Ctx | null = null;
-
-        // Prioridade de exibição: "Comece por aqui" (Cadastro/Diagnóstico) sempre no topo se não feito
-        if (!hasPlant) {
-          ctx = {
-            eyebrow: "Comece por aqui",
-            title: "Cadastre sua orquídea",
-            desc: "Personalizamos o plano com base nas informações da sua planta.",
-            cta: { label: "Cadastrar orquídea", icon: <Sparkles size={16} />, onClick: () => setTab("orquidea") },
-          };
-        } else if (!diagnosisFresh) {
-          ctx = {
-            eyebrow: "Comece por aqui",
-            title: "Faça o diagnóstico da sua orquídea",
-            desc: "Em poucos minutos você recebe um plano personalizado de 21 dias.",
-            cta: { label: "Fazer diagnóstico", icon: <Stethoscope size={16} />, onClick: () => setStatus("needs_diagnosis") },
-          };
-        }
-
-        // Se houver um contexto prioritário ("Comece por aqui"), exibe-o no topo
-        if (ctx) {
+        // Se o usuário não tem planta OU o diagnóstico não está atualizado, exibe o card único de onboarding
+        if (!hasPlant || !diagnosisFresh) {
+          const isMissingPlant = !hasPlant;
+          
           return (
             <div
               role="button"
               tabIndex={0}
               onClick={() => {
                 playInteractionSound();
-                ctx.cta.onClick();
+                if (isMissingPlant) {
+                  setTab("orquidea");
+                } else {
+                  setStatus("needs_diagnosis");
+                }
               }}
               onKeyDown={(e) => { 
                 if (e.key === "Enter" || e.key === " ") {
                   playInteractionSound();
-                  ctx.cta.onClick(); 
+                  if (isMissingPlant) {
+                    setTab("orquidea");
+                  } else {
+                    setStatus("needs_diagnosis");
+                  }
                 }
               }}
-              className="group relative w-full cursor-pointer overflow-hidden rounded-2xl border-2 border-accent bg-gradient-to-br from-accent/15 via-accent/5 to-transparent p-5 text-left shadow-lg shadow-accent/10 transition-all active:scale-[0.99]"
+              className="group relative w-full cursor-pointer overflow-hidden rounded-2xl border-2 border-accent bg-gradient-to-br from-accent/20 via-accent/5 to-transparent p-6 text-left shadow-lg shadow-accent/10 transition-all active:scale-[0.99]"
             >
               <div className="relative z-10">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-accent">
-                    <Sparkles size={14} />
-                    <span className="text-[10px] font-bold uppercase tracking-widest">{ctx.eyebrow}</span>
+                    <Sparkles size={16} />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">Próximo passo: O que fazer agora</span>
                   </div>
-                  <ChevronRight size={16} className="text-accent/60 transition-transform group-hover:translate-x-1" />
+                  <ChevronRight size={20} className="text-accent/60 transition-transform group-hover:translate-x-1" />
                 </div>
-                <h3 className="mt-2 font-display text-2xl leading-tight text-primary">
-                  {ctx.title}
+                <h3 className="mt-3 font-display text-2xl leading-tight text-primary">
+                  {isMissingPlant 
+                    ? "Cadastre sua orquídea e comece o diagnóstico" 
+                    : "Finalize o diagnóstico da sua orquídea"}
                 </h3>
-                <p className="mt-1.5 text-sm text-primary/75">
-                  {ctx.desc}
+                <p className="mt-2 text-sm text-primary/75">
+                  {isMissingPlant 
+                    ? "Para gerar seu plano de 21 dias, precisamos primeiro conhecer sua planta e o estado dela."
+                    : "Você já cadastrou sua orquídea! Agora falta pouco para receber seu plano personalizado."}
                 </p>
-                <button
-                  onClick={(e) => { 
-                    e.stopPropagation(); 
-                    playInteractionSound();
-                    ctx.cta.onClick(); 
-                  }}
-                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-sm transition-all hover:brightness-110 active:scale-[0.98]"
-                >
-                  {ctx.cta.icon}
-                  {ctx.cta.label}
-                </button>
+                <div className="mt-5 flex items-center gap-3">
+                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-md transition-transform group-hover:scale-110">
+                     {isMissingPlant ? <Plus size={20} /> : <Stethoscope size={20} />}
+                   </div>
+                   <span className="font-bold text-primary group-hover:underline">
+                     {isMissingPlant ? "Cadastrar orquídea agora" : "Continuar para o diagnóstico"}
+                   </span>
+                </div>
               </div>
+              {/* Efeito visual de destaque */}
+              <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-accent/10 blur-2xl transition-all group-hover:bg-accent/20" />
             </div>
           );
         }
 
-        // Caso contrário, exibe o resumo do dia padrão
+        // Caso contrário (usuário já cadastrado), exibe o resumo do dia padrão
         return (
           <div
             role="button"
