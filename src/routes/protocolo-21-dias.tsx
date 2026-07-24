@@ -191,7 +191,7 @@ export function ProtocoloShell({ initialTab }: { initialTab?: Tab } = {}) {
   // Retomar automaticamente para a aba correta quando o status mudar para ready
   useEffect(() => {
     if (hasInitialTab) return;
-    if (status === "ready") {
+    if (status === "ready" || (status === "signed_out" && isGuestActive())) {
       const state = getState();
       if (!state.onboarded) {
         setStatus("onboarding");
