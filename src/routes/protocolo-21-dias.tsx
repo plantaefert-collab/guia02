@@ -197,6 +197,12 @@ export function ProtocoloShell({ initialTab }: { initialTab?: Tab } = {}) {
         setStatus("onboarding");
       }
     }
+    if (status === "onboarding") {
+      const state = getState();
+      if (state.onboarded) {
+        setStatus("ready");
+      }
+    }
   }, [status, hasInitialTab]);
 
   const [guestMode, setGuestMode] = useState(false);
