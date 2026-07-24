@@ -2099,8 +2099,15 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                 handleRedirectToPlan();
                 setTimeout(() => {
                   const registerEl = document.querySelector('[data-register-field]');
-                  if (registerEl) registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  if (registerEl) {
+                    registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                      const input = registerEl.querySelector('textarea');
+                      if (input) input.focus({ preventScroll: true });
+                    }, 500);
+                  }
                 }, 100);
+
               }}
               className="mt-4 flex w-full items-center justify-between rounded-xl border border-primary/20 bg-primary/[0.04] px-4 py-3 text-sm font-bold text-primary transition-all hover:bg-primary/10 active:scale-[0.98]"
             >
@@ -2320,8 +2327,15 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                   handleRedirectToPlan();
                     setTimeout(() => {
                       const registerEl = document.querySelector('[data-register-field]');
-                      if (registerEl) registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      if (registerEl) {
+                        registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => {
+                          const input = registerEl.querySelector('textarea');
+                          if (input) input.focus({ preventScroll: true });
+                        }, 500);
+                      }
                     }, 100);
+
                   }}
                   className="mt-3 flex w-full items-center justify-between rounded-xl border border-primary/20 bg-primary/5 px-4 py-2.5 text-[11px] font-bold text-primary transition-all hover:bg-primary/10 active:scale-[0.98]"
                 >
@@ -2341,8 +2355,15 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                     handleRedirectToPlan();
                     setTimeout(() => {
                       const firstChecklistEl = document.querySelector('[data-checklist-item]');
-                      if (firstChecklistEl) firstChecklistEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      if (firstChecklistEl) {
+                        firstChecklistEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => {
+                          const trigger = firstChecklistEl.querySelector('button') || firstChecklistEl;
+                          (trigger as HTMLElement).focus({ preventScroll: true });
+                        }, 500);
+                      }
                     }, 100);
+
                   }}
                   className="mt-3 flex w-full items-center justify-between rounded-xl border border-accent/20 bg-accent/5 px-4 py-2.5 text-[11px] font-bold text-accent transition-all hover:bg-primary/10 active:scale-[0.98]"
                 >
