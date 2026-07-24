@@ -51,6 +51,7 @@ import {
   VolumeX,
   Zap,
   Clock,
+  Smartphone,
 } from "lucide-react";
 
 import {
@@ -87,6 +88,7 @@ import {
 } from "@/lib/diagnosis-matrix";
 import { useAuthBootstrap } from "@/hooks/use-auth-bootstrap";
 import type { AuthBootstrapStatus } from "@/lib/auth/types";
+export type AuthBootstrapStatusExtended = AuthBootstrapStatus | "onboarding";
 import { AuthScreen } from "@/components/auth/AuthScreen";
 import { AccountMenu } from "@/components/auth/AccountMenu";
 import { LegacyProgressDialog } from "@/components/auth/LegacyProgressDialog";
@@ -106,6 +108,7 @@ import kitMetodo from "@/assets/kit-metodo-app.jpg";
 import { QuickTour } from "@/components/QuickTour";
 import { exportProtocolPDF, previewProtocolPDF, protocolPdfFilename } from "@/lib/pdf-export";
 import { WelcomeScreen } from "@/components/WelcomeScreen";
+import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 
 
 
@@ -191,10 +194,8 @@ export function ProtocoloShell({ initialTab }: { initialTab?: Tab } = {}) {
     if (hasInitialTab) return;
     if (status === "ready") {
       const state = getState();
-      if (state.onboarded) {
-        setTab("plano");
-      } else {
-        setTab("inicio");
+      if (!state.onboarded) {
+        setStatus("onboarding");
       }
     }
   }, [status, hasInitialTab]);
@@ -399,6 +400,24 @@ export function ProtocoloShell({ initialTab }: { initialTab?: Tab } = {}) {
                 store.setOnboarded(true, actorId);
                 setStatus("ready");
                 // Fluxo automático: levar diretamente para o Plano (onde está a tarefa do dia)
+                setTab("plano");
+              }}
+            />
+          </motion.div>
+        )}
+
+        {status === "onboarding" && (
+          <motion.div
+            key="onboarding"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background"
+          >
+            <OnboardingFlow
+              actorId={actorId}
+              onFinish={() => {
+                setStatus("ready");
                 setTab("plano");
               }}
             />

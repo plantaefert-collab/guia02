@@ -15,7 +15,8 @@ import {
   Info,
   X,
   Smartphone,
-  Check
+  Check,
+  Sprout
 } from "lucide-react";
 import { useProtocolStore } from "@/lib/protocol-store";
 import { uploadOrEncodePhoto } from "@/lib/photo-upload";
