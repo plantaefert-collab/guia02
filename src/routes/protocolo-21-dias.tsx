@@ -2099,8 +2099,15 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                 handleRedirectToPlan();
                 setTimeout(() => {
                   const registerEl = document.querySelector('[data-register-field]');
-                  if (registerEl) registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  if (registerEl) {
+                    registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                      const input = registerEl.querySelector('textarea');
+                      if (input) input.focus({ preventScroll: true });
+                    }, 500);
+                  }
                 }, 100);
+
               }}
               className="mt-4 flex w-full items-center justify-between rounded-xl border border-primary/20 bg-primary/[0.04] px-4 py-3 text-sm font-bold text-primary transition-all hover:bg-primary/10 active:scale-[0.98]"
             >
@@ -2320,8 +2327,15 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                   handleRedirectToPlan();
                     setTimeout(() => {
                       const registerEl = document.querySelector('[data-register-field]');
-                      if (registerEl) registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      if (registerEl) {
+                        registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => {
+                          const input = registerEl.querySelector('textarea');
+                          if (input) input.focus({ preventScroll: true });
+                        }, 500);
+                      }
                     }, 100);
+
                   }}
                   className="mt-3 flex w-full items-center justify-between rounded-xl border border-primary/20 bg-primary/5 px-4 py-2.5 text-[11px] font-bold text-primary transition-all hover:bg-primary/10 active:scale-[0.98]"
                 >
@@ -2341,8 +2355,15 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                     handleRedirectToPlan();
                     setTimeout(() => {
                       const firstChecklistEl = document.querySelector('[data-checklist-item]');
-                      if (firstChecklistEl) firstChecklistEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      if (firstChecklistEl) {
+                        firstChecklistEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => {
+                          const trigger = firstChecklistEl.querySelector('button') || firstChecklistEl;
+                          (trigger as HTMLElement).focus({ preventScroll: true });
+                        }, 500);
+                      }
                     }, 100);
+
                   }}
                   className="mt-3 flex w-full items-center justify-between rounded-xl border border-accent/20 bg-accent/5 px-4 py-2.5 text-[11px] font-bold text-accent transition-all hover:bg-primary/10 active:scale-[0.98]"
                 >
@@ -2685,7 +2706,7 @@ function PlanoTab({ actorId, setTab, onPreviewDay, setStatus }: PlanoTabProps) {
               y: { duration: 0.4 },
               scale: { duration: 0.6, delay: 0.2, ease: "easeOut" }
             }}
-            className="text-3xl font-display tracking-tight text-primary outline-none focus-visible:ring-2 focus-visible:ring-primary/20 rounded-lg"
+            className="text-3xl font-display tracking-tight text-primary outline-none focus-visible:ring-4 focus-visible:ring-primary/30 rounded-lg transition-shadow duration-300"
           >
             Plano de <span className="text-4xl text-accent">21</span> dias
           </motion.h1>
@@ -2790,7 +2811,9 @@ function PlanoTab({ actorId, setTab, onPreviewDay, setStatus }: PlanoTabProps) {
             return (
               <motion.button
                 key={item}
+                data-checklist-item
                 whileTap={{ scale: 0.98 }}
+
                 onClick={() => {
                   toggleChecklist(day, item, actorId);
                   if (!checked) playPopSound();
@@ -2821,7 +2844,7 @@ function PlanoTab({ actorId, setTab, onPreviewDay, setStatus }: PlanoTabProps) {
           })}
         </div>
 
-        <RegisterField meta={meta} entry={entry} onChange={(note) => updateDay(day, { note }, actorId)} />
+        <RegisterField meta={meta} entry={entry} onChange={(note) => updateDay(day, { note }, actorId)} data-register-field />
 
         <DayPhotoField
           day={day}
@@ -3435,11 +3458,14 @@ function RegisterField({
   meta,
   entry,
   onChange,
+  ...props
 }: {
   meta: ProtocolDay;
   entry: { note: string };
   onChange: (v: string) => void;
+  [key: string]: any;
 }) {
+
   const label = meta.recordPrompt || "Registre sua observação de hoje.";
   const options: RegisterOption[] | undefined = meta.registerOptions;
   const inputId = `note-day-${meta.day}`;
@@ -3464,7 +3490,7 @@ function RegisterField({
   }, []);
 
   return (
-    <div className="mt-4 space-y-2" data-register-field>
+    <div className="mt-4 space-y-2 focus-within:ring-2 focus-within:ring-primary/20 rounded-xl p-2 -m-2 transition-shadow" {...props}>
 
       <div className="flex items-center justify-between gap-2">
         <label htmlFor={inputId} className="block text-[13px] font-semibold text-primary">
