@@ -42,6 +42,7 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
     const sequence: OnboardingStep[] = ["welcome", "plant_info", "diagnosis_intro", "diagnosis_roots", "diagnosis_leaves", "diagnosis_env", "summary"];
     const currentIndex = sequence.indexOf(step);
     if (currentIndex < sequence.length - 1) {
+      setDirection(1);
       const next = sequence[currentIndex + 1];
       setStep(next);
       setOnboardingStep(next, actorId);
@@ -54,6 +55,7 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
     const sequence: OnboardingStep[] = ["welcome", "plant_info", "diagnosis_intro", "diagnosis_roots", "diagnosis_leaves", "diagnosis_env", "summary"];
     const currentIndex = sequence.indexOf(step);
     if (currentIndex > 0) {
+      setDirection(-1);
       const prev = sequence[currentIndex - 1];
       setStep(prev);
       setOnboardingStep(prev, actorId);
