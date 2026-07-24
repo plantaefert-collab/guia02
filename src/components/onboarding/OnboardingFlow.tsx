@@ -400,7 +400,7 @@ const slideVariants: Variants = {
       scale: { duration: 0.3 },
       filter: { duration: 0.2 }
     }
-  },
+  } as any,
   exit: (direction: number) => ({
     zIndex: 0,
     x: direction < 0 ? "50%" : "-50%",
