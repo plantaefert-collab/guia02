@@ -2685,7 +2685,7 @@ function PlanoTab({ actorId, setTab, onPreviewDay, setStatus }: PlanoTabProps) {
               y: { duration: 0.4 },
               scale: { duration: 0.6, delay: 0.2, ease: "easeOut" }
             }}
-            className="text-3xl font-display tracking-tight text-primary outline-none focus-visible:ring-2 focus-visible:ring-primary/20 rounded-lg"
+            className="text-3xl font-display tracking-tight text-primary outline-none focus-visible:ring-4 focus-visible:ring-primary/30 rounded-lg transition-shadow duration-300"
           >
             Plano de <span className="text-4xl text-accent">21</span> dias
           </motion.h1>
@@ -2821,7 +2821,7 @@ function PlanoTab({ actorId, setTab, onPreviewDay, setStatus }: PlanoTabProps) {
           })}
         </div>
 
-        <RegisterField meta={meta} entry={entry} onChange={(note) => updateDay(day, { note }, actorId)} />
+        <RegisterField meta={meta} entry={entry} onChange={(note) => updateDay(day, { note }, actorId)} data-register-field />
 
         <DayPhotoField
           day={day}
@@ -3464,7 +3464,7 @@ function RegisterField({
   }, []);
 
   return (
-    <div className="mt-4 space-y-2" data-register-field>
+    <div className="mt-4 space-y-2 focus-within:ring-2 focus-within:ring-primary/20 rounded-xl p-2 -m-2 transition-shadow" {...props}>
 
       <div className="flex items-center justify-between gap-2">
         <label htmlFor={inputId} className="block text-[13px] font-semibold text-primary">
