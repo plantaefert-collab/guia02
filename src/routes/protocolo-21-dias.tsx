@@ -1953,93 +1953,187 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
 
   return (
     <div className="space-y-4">
-      {/* Resumo do dia (Agora apenas se não houver pendências de cadastro/diagnóstico) */}
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={handleRedirectToPlan}
-        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleRedirectToPlan(); }}
-        className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-primary/40 active:scale-[0.99]"
-      >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-primary">
-            <Calendar size={14} />
-            <span className="text-[10px] font-bold uppercase tracking-widest">Resumo do dia {day}</span>
-          </div>
-          <ChevronRight size={16} className="text-primary/40 transition-transform group-hover:translate-x-1" />
-        </div>
-        <h3 className="mt-2 font-display text-2xl leading-tight text-primary">
-          {hasPendencies ? "Você tem pendências" : "Dia em dia"}
-        </h3>
-        <div className="mt-3 grid grid-cols-3 gap-2">
-          <div className="rounded-xl bg-primary/[0.04] p-3 text-center">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Tarefas</div>
-            <div className="mt-1 font-display text-2xl text-primary">
-              {doneTasks}<span className="text-primary/40">/{totalTasks || "—"}</span>
+      {/* Blocos contextuais (Início, Cadastro, Diagnóstico) */}
+      {(() => {
+        const meta = getProtocolDay(day);
+        const today = state.days[day] ?? { checklist: {}, note: "", completed: false };
+        const checklistState = today.checklist ?? {};
+        const pendingChecklist = meta.checklist
+          .map((label, i) => ({ label, i, done: !!checklistState[label] }))
+          .filter((c) => !c.done);
+        const nextItems = pendingChecklist.slice(0, 3);
+        const allDone = pendingChecklist.length === 0;
+
+        // Detecta estado contextual do usuário
+        const hasPlant = !!state.plant.name?.trim();
+        const applicationPending = isApplicationDay && !today.applicationDone;
+        const protocolFinished = day >= 21 && allDone;
+
+        type Ctx = {
+          eyebrow: string;
+          title: string;
+          desc: string;
+          cta: { label: string; icon: ReactNode; onClick: () => void };
+        };
+
+        let ctx: Ctx | null = null;
+
+        // Prioridade de exibição: "Comece por aqui" (Cadastro/Diagnóstico) sempre no topo se não feito
+        if (!hasPlant) {
+          ctx = {
+            eyebrow: "Comece por aqui",
+            title: "Cadastre sua orquídea",
+            desc: "Personalizamos o plano com base nas informações da sua planta.",
+            cta: { label: "Cadastrar orquídea", icon: <Sparkles size={16} />, onClick: () => setTab("orquidea") },
+          };
+        } else if (!diagnosisFresh) {
+          ctx = {
+            eyebrow: "Comece por aqui",
+            title: "Faça o diagnóstico da sua orquídea",
+            desc: "Em poucos minutos você recebe um plano personalizado de 21 dias.",
+            cta: { label: "Fazer diagnóstico", icon: <Stethoscope size={16} />, onClick: () => setStatus("needs_diagnosis") },
+          };
+        }
+
+        // Se houver um contexto prioritário ("Comece por aqui"), exibe-o no topo
+        if (ctx) {
+          return (
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                playInteractionSound();
+                ctx.cta.onClick();
+              }}
+              onKeyDown={(e) => { 
+                if (e.key === "Enter" || e.key === " ") {
+                  playInteractionSound();
+                  ctx.cta.onClick(); 
+                }
+              }}
+              className="group relative w-full cursor-pointer overflow-hidden rounded-2xl border-2 border-accent bg-gradient-to-br from-accent/15 via-accent/5 to-transparent p-5 text-left shadow-lg shadow-accent/10 transition-all active:scale-[0.99]"
+            >
+              <div className="relative z-10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-accent">
+                    <Sparkles size={14} />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">{ctx.eyebrow}</span>
+                  </div>
+                  <ChevronRight size={16} className="text-accent/60 transition-transform group-hover:translate-x-1" />
+                </div>
+                <h3 className="mt-2 font-display text-2xl leading-tight text-primary">
+                  {ctx.title}
+                </h3>
+                <p className="mt-1.5 text-sm text-primary/75">
+                  {ctx.desc}
+                </p>
+                <button
+                  onClick={(e) => { 
+                    e.stopPropagation(); 
+                    playInteractionSound();
+                    ctx.cta.onClick(); 
+                  }}
+                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-sm transition-all hover:brightness-110 active:scale-[0.98]"
+                >
+                  {ctx.cta.icon}
+                  {ctx.cta.label}
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="rounded-xl bg-accent/[0.08] p-3 text-center">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Aplicações</div>
-            <div className="mt-1 font-display text-2xl text-accent">{appsDoneToday}</div>
-          </div>
-          <div className="rounded-xl bg-primary/[0.04] p-3 text-center">
-            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Registro</div>
-            <div className="mt-1 font-display text-2xl text-primary">{noteDone ? "✓" : "—"}</div>
-          </div>
-        </div>
-        {(!noteDone || !photoDone) && (
-          <div className="mt-3 flex flex-wrap gap-2">
-            {!noteDone && (
-              <span className="rounded-full bg-accent/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
-                Registro pendente
-              </span>
+          );
+        }
+
+        // Caso contrário, exibe o resumo do dia padrão
+        return (
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={handleRedirectToPlan}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleRedirectToPlan(); }}
+            className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-primary/40 active:scale-[0.99]"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-primary">
+                <Calendar size={14} />
+                <span className="text-[10px] font-bold uppercase tracking-widest">Resumo do dia {day}</span>
+              </div>
+              <ChevronRight size={16} className="text-primary/40 transition-transform group-hover:translate-x-1" />
+            </div>
+            <h3 className="mt-2 font-display text-2xl leading-tight text-primary">
+              {hasPendencies ? "Você tem pendências" : "Dia em dia"}
+            </h3>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <div className="rounded-xl bg-primary/[0.04] p-3 text-center">
+                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Tarefas</div>
+                <div className="mt-1 font-display text-2xl text-primary">
+                  {doneTasks}<span className="text-primary/40">/{totalTasks || "—"}</span>
+                </div>
+              </div>
+              <div className="rounded-xl bg-accent/[0.08] p-3 text-center">
+                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Aplicações</div>
+                <div className="mt-1 font-display text-2xl text-accent">{appsDoneToday}</div>
+              </div>
+              <div className="rounded-xl bg-primary/[0.04] p-3 text-center">
+                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Registro</div>
+                <div className="mt-1 font-display text-2xl text-primary">{noteDone ? "✓" : "—"}</div>
+              </div>
+            </div>
+            {(!noteDone || !photoDone) && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {!noteDone && (
+                  <span className="rounded-full bg-accent/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
+                    Registro pendente
+                  </span>
+                )}
+                {!photoDone && (
+                  <span className="rounded-full bg-accent/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
+                    Foto pendente
+                  </span>
+                )}
+              </div>
             )}
-            {!photoDone && (
-              <span className="rounded-full bg-accent/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
-                Foto pendente
-              </span>
-            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                playInteractionSound();
+                handleRedirectToPlan();
+                setTimeout(() => {
+                  const registerEl = document.querySelector('[data-register-field]');
+                  if (registerEl) registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+              }}
+              className="mt-4 flex w-full items-center justify-between rounded-xl border border-primary/20 bg-primary/[0.04] px-4 py-3 text-sm font-bold text-primary transition-all hover:bg-primary/10 active:scale-[0.98]"
+            >
+              <div className="flex items-center gap-2">
+                <BookOpen size={16} />
+                <span>Escrever registro do dia</span>
+              </div>
+              <ChevronRight size={16} className="opacity-40" />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (dayFullyDone) return;
+                handleCompleteDay();
+              }}
+              disabled={dayFullyDone}
+              className={cn(
+                "mt-2 flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm font-bold transition-all active:scale-[0.98]",
+                dayFullyDone
+                  ? "cursor-not-allowed border border-primary/20 bg-primary/[0.06] text-primary/60"
+                  : "border border-primary bg-primary text-primary-foreground shadow-md hover:bg-primary/90",
+              )}
+            >
+              <div className="flex items-center gap-2">
+                <CheckCircle2 size={16} />
+                <span>{dayFullyDone ? `Dia ${day} concluído` : "Concluir meu dia"}</span>
+              </div>
+              {!dayFullyDone && <ChevronRight size={16} className="opacity-70" />}
+            </button>
           </div>
-        )}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            playInteractionSound();
-            handleRedirectToPlan();
-            setTimeout(() => {
-              const registerEl = document.querySelector('[data-register-field]');
-              if (registerEl) registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
-          }}
-          className="mt-4 flex w-full items-center justify-between rounded-xl border border-primary/20 bg-primary/[0.04] px-4 py-3 text-sm font-bold text-primary transition-all hover:bg-primary/10 active:scale-[0.98]"
-        >
-          <div className="flex items-center gap-2">
-            <BookOpen size={16} />
-            <span>Escrever registro do dia</span>
-          </div>
-          <ChevronRight size={16} className="opacity-40" />
-        </button>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            if (dayFullyDone) return;
-            handleCompleteDay();
-          }}
-          disabled={dayFullyDone}
-          className={cn(
-            "mt-2 flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm font-bold transition-all active:scale-[0.98]",
-            dayFullyDone
-              ? "cursor-not-allowed border border-primary/20 bg-primary/[0.06] text-primary/60"
-              : "border border-primary bg-primary text-primary-foreground shadow-md hover:bg-primary/90",
-          )}
-        >
-          <div className="flex items-center gap-2">
-            <CheckCircle2 size={16} />
-            <span>{dayFullyDone ? `Dia ${day} concluído` : "Concluir meu dia"}</span>
-          </div>
-          {!dayFullyDone && <ChevronRight size={16} className="opacity-70" />}
-        </button>
-      </div>
+        );
+      })()}
+
 
 
       <div className="flex items-center justify-between px-1">
