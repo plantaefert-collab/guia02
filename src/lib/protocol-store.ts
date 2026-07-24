@@ -80,6 +80,7 @@ export type ProtocolState = {
     highContrast?: boolean;
     reminderTime?: string;
   };
+  onboardingStep?: string;
   /** Non-persisted transient flag set when the last localStorage write failed. */
   saveError?: string;
 };
@@ -164,6 +165,7 @@ export const defaultState: ProtocolState = {
   applications: [],
   finalEval: { improved: "", same: "", attention: "", keep: "", path: "" },
   onboarded: false,
+  onboardingStep: "welcome",
   tourCompleted: false,
   remindersCompleted: {},
 };
@@ -409,6 +411,9 @@ export function useProtocolStore() {
         ...s,
         settings: { ...s.settings, ...patch }
       }), actorId);
+    },
+    setOnboardingStep: (step: string, actorId: string | "guest") => {
+      wrapSetState((s) => ({ ...s, onboardingStep: step }), actorId);
     }
   };
 }
