@@ -193,6 +193,7 @@ export function ProtocoloShell({ initialTab }: { initialTab?: Tab } = {}) {
     if (hasInitialTab) return;
     if (status === "ready" || (status === "signed_out" && isGuestActive())) {
       const state = getState();
+      console.log("Checking onboarding - status:", status, "onboarded:", state.onboarded);
       if (!state.onboarded) {
         console.log("Triggering onboarding - state.onboarded is false");
         setStatus("onboarding");
