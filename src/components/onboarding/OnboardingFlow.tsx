@@ -413,5 +413,5 @@ const slideVariants: Variants = {
       scale: { duration: 0.3 },
       filter: { duration: 0.2 }
     }
-  })
+  } as any)
 };
