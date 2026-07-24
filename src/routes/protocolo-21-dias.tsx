@@ -2099,11 +2099,12 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
           };
         } else if (!diagnosisFresh) {
           ctx = {
-            eyebrow: "Próximo passo",
+            eyebrow: "Comece por aqui",
             title: "Faça o diagnóstico da sua orquídea",
             desc: "Em poucos minutos você recebe um plano personalizado de 21 dias.",
             cta: { label: "Fazer diagnóstico", icon: <Stethoscope size={16} />, onClick: () => setStatus("needs_diagnosis") },
           };
+
         } else if (protocolFinished) {
           ctx = {
             eyebrow: "Protocolo concluído",
