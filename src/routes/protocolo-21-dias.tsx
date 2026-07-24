@@ -2138,8 +2138,8 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
 
       <div className="flex items-center justify-between px-1">
         <SectionHeader
-          eyebrow="Bloco 1"
-          title="Foco do dia"
+          eyebrow="Bloco 2"
+          title="Próximo passo"
           subtitle={focusedMode ? "Visualização concentrada ativa" : "O que você precisa fazer agora?"}
         />
         <button
@@ -2185,22 +2185,7 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
         };
 
         let ctx: Ctx | null = null;
-        if (!hasPlant) {
-          ctx = {
-            eyebrow: "Comece por aqui",
-            title: "Cadastre sua orquídea",
-            desc: "Personalizamos o plano com base nas informações da sua planta.",
-            cta: { label: "Cadastrar orquídea", icon: <Sparkles size={16} />, onClick: () => setTab("orquidea") },
-          };
-        } else if (!diagnosisFresh) {
-          ctx = {
-            eyebrow: "Comece por aqui",
-            title: "Faça o diagnóstico da sua orquídea",
-            desc: "Em poucos minutos você recebe um plano personalizado de 21 dias.",
-            cta: { label: "Fazer diagnóstico", icon: <Stethoscope size={16} />, onClick: () => setStatus("needs_diagnosis") },
-          };
-
-        } else if (protocolFinished) {
+        if (protocolFinished) {
           ctx = {
             eyebrow: "Protocolo concluído",
             title: "Faça sua avaliação final",
@@ -2217,7 +2202,6 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
               : "Hoje é dia de aplicar o Método de 2 Passos. Registre para não perder o próximo ciclo.",
             cta: { label: `Fazer aplicação agora (Dia ${day})`, icon: <ChevronRight size={16} />, onClick: handleRedirectToPlan },
           };
-
         } else if (allDone && day < 21) {
           ctx = {
             eyebrow: `Dia ${day} · Concluído`,
@@ -2227,19 +2211,17 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
           };
         } else {
           ctx = {
-            eyebrow: `Próximo passo · Dia ${day}`,
+            eyebrow: `Dia ${day}`,
             title: meta.title,
             desc: meta.mainAction,
             cta: { label: `Focar no dia ${day}`, icon: <Sparkles size={16} />, onClick: handleRedirectToPlan },
           };
         }
 
-
         const showChecklist = hasPlant && diagnosisFresh && !applicationPending && !protocolFinished && !allDone && nextItems.length > 0;
         const progressPct = Math.round(((day - 1) / 21) * 100 + (allDone ? Math.round(100 / 21) : 0));
         const hasNote = !!today.note?.trim();
         const showRegistrationShortcut = diagnosisFresh && !allDone && !hasNote;
-
 
         return (
           <div
@@ -2259,15 +2241,13 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                 ctx.cta.onClick(); 
               }
             }}
-
             className={cn(
               "group relative w-full cursor-pointer overflow-hidden rounded-2xl border-2 p-5 text-left shadow-sm transition-all active:scale-[0.99]",
               isApplicationDay 
                 ? [3, 10, 17].includes(day)
                   ? "border-accent bg-gradient-to-br from-accent/20 via-accent/10 to-transparent shadow-xl shadow-accent/10 ring-2 ring-accent animate-[pulse_3s_ease-in-out_infinite]"
                   : "border-accent/40 bg-gradient-to-br from-accent/10 via-accent/5 to-transparent shadow-lg shadow-accent/5 ring-1 ring-accent/20" 
-                : "border-accent/30 bg-gradient-to-br from-accent/[0.06] to-primary/[0.04] hover:border-accent/50"
-
+                : "border-primary/20 bg-gradient-to-br from-primary/[0.04] to-transparent hover:border-primary/40"
             )}
           >
             {isApplicationDay && (
@@ -2279,7 +2259,7 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
 
             <div className="relative z-10">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-accent">
+                <div className="flex items-center gap-2 text-primary/60">
                   <Sparkles size={14} />
                   <span className="text-[10px] font-bold uppercase tracking-widest">{ctx.eyebrow}</span>
                 </div>
@@ -2289,7 +2269,7 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                      Aplicação
                   </span>
                 )}
-                <ChevronRight size={16} className="text-accent/60 transition-transform group-hover:translate-x-1" />
+                <ChevronRight size={16} className="text-primary/40 transition-transform group-hover:translate-x-1" />
               </div>
               <h3 className="mt-2 font-display text-xl leading-tight text-primary">
                 {ctx.title}
@@ -2338,7 +2318,6 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                   e.stopPropagation();
                   playInteractionSound();
                   handleRedirectToPlan();
-                    // Pequeno delay para garantir que o scroll aconteça após a troca de aba
                     setTimeout(() => {
                       const registerEl = document.querySelector('[data-register-field]');
                       if (registerEl) registerEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2353,7 +2332,6 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                   <ChevronRight size={14} className="opacity-40" />
                 </button>
               )}
-
 
               {showChecklist && nextItems.length > 0 && (
                 <button
@@ -2396,12 +2374,11 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                    Etapa atual: <span className="text-accent/90 font-bold">Dia {day}</span> • {getProtocolDay(day).title}
                  </span>
               </div>
-
-
             </div>
           </div>
         );
       })()}
+
 
       {!focusedMode && (
         <>
