@@ -9,85 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AprenderRouteImport } from './routes/aprender'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as BemVindoRouteImport } from './routes/bem-vindo'
-import { Route as DiagnosticoRouteImport } from './routes/diagnostico'
-import { Route as DiarioRouteImport } from './routes/diario'
-import { Route as InicioRouteImport } from './routes/inicio'
-import { Route as InicioDemoRouteImport } from './routes/inicio-demo'
-import { Route as MetodoRouteImport } from './routes/metodo'
-import { Route as MinhaOrquideaRouteImport } from './routes/minha-orquidea'
-import { Route as OpcoesMetodoRouteImport } from './routes/opcoes-metodo'
-import { Route as PlanoRouteImport } from './routes/plano'
-import { Route as Protocolo21DiasRouteImport } from './routes/protocolo-21-dias'
-import { Route as ResumoRouteImport } from './routes/resumo'
 import { Route as TesteOnboardingRouteImport } from './routes/teste-onboarding'
+import { Route as ResumoRouteImport } from './routes/resumo'
+import { Route as Protocolo21DiasRouteImport } from './routes/protocolo-21-dias'
+import { Route as PlanoRouteImport } from './routes/plano'
+import { Route as OpcoesMetodoRouteImport } from './routes/opcoes-metodo'
+import { Route as MinhaOrquideaRouteImport } from './routes/minha-orquidea'
+import { Route as MetodoRouteImport } from './routes/metodo'
+import { Route as InicioDemoRouteImport } from './routes/inicio-demo'
+import { Route as InicioRouteImport } from './routes/inicio'
+import { Route as DiarioRouteImport } from './routes/diario'
+import { Route as DiagnosticoRouteImport } from './routes/diagnostico'
+import { Route as BemVindoRouteImport } from './routes/bem-vindo'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AprenderRouteImport } from './routes/aprender'
+import { Route as IndexRouteImport } from './routes/index'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AprenderRoute = AprenderRouteImport.update({
-  id: '/aprender',
-  path: '/aprender',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BemVindoRoute = BemVindoRouteImport.update({
-  id: '/bem-vindo',
-  path: '/bem-vindo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DiagnosticoRoute = DiagnosticoRouteImport.update({
-  id: '/diagnostico',
-  path: '/diagnostico',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DiarioRoute = DiarioRouteImport.update({
-  id: '/diario',
-  path: '/diario',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InicioRoute = InicioRouteImport.update({
-  id: '/inicio',
-  path: '/inicio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InicioDemoRoute = InicioDemoRouteImport.update({
-  id: '/inicio-demo',
-  path: '/inicio-demo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MetodoRoute = MetodoRouteImport.update({
-  id: '/metodo',
-  path: '/metodo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MinhaOrquideaRoute = MinhaOrquideaRouteImport.update({
-  id: '/minha-orquidea',
-  path: '/minha-orquidea',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpcoesMetodoRoute = OpcoesMetodoRouteImport.update({
-  id: '/opcoes-metodo',
-  path: '/opcoes-metodo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlanoRoute = PlanoRouteImport.update({
-  id: '/plano',
-  path: '/plano',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Protocolo21DiasRoute = Protocolo21DiasRouteImport.update({
-  id: '/protocolo-21-dias',
-  path: '/protocolo-21-dias',
+const TesteOnboardingRoute = TesteOnboardingRouteImport.update({
+  id: '/teste-onboarding',
+  path: '/teste-onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResumoRoute = ResumoRouteImport.update({
@@ -95,9 +35,69 @@ const ResumoRoute = ResumoRouteImport.update({
   path: '/resumo',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TesteOnboardingRoute = TesteOnboardingRouteImport.update({
-  id: '/teste-onboarding',
-  path: '/teste-onboarding',
+const Protocolo21DiasRoute = Protocolo21DiasRouteImport.update({
+  id: '/protocolo-21-dias',
+  path: '/protocolo-21-dias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanoRoute = PlanoRouteImport.update({
+  id: '/plano',
+  path: '/plano',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpcoesMetodoRoute = OpcoesMetodoRouteImport.update({
+  id: '/opcoes-metodo',
+  path: '/opcoes-metodo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MinhaOrquideaRoute = MinhaOrquideaRouteImport.update({
+  id: '/minha-orquidea',
+  path: '/minha-orquidea',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MetodoRoute = MetodoRouteImport.update({
+  id: '/metodo',
+  path: '/metodo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InicioDemoRoute = InicioDemoRouteImport.update({
+  id: '/inicio-demo',
+  path: '/inicio-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InicioRoute = InicioRouteImport.update({
+  id: '/inicio',
+  path: '/inicio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiarioRoute = DiarioRouteImport.update({
+  id: '/diario',
+  path: '/diario',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiagnosticoRoute = DiagnosticoRouteImport.update({
+  id: '/diagnostico',
+  path: '/diagnostico',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BemVindoRoute = BemVindoRouteImport.update({
+  id: '/bem-vindo',
+  path: '/bem-vindo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AprenderRoute = AprenderRouteImport.update({
+  id: '/aprender',
+  path: '/aprender',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -227,95 +227,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/aprender': {
-      id: '/aprender'
-      path: '/aprender'
-      fullPath: '/aprender'
-      preLoaderRoute: typeof AprenderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/bem-vindo': {
-      id: '/bem-vindo'
-      path: '/bem-vindo'
-      fullPath: '/bem-vindo'
-      preLoaderRoute: typeof BemVindoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/diagnostico': {
-      id: '/diagnostico'
-      path: '/diagnostico'
-      fullPath: '/diagnostico'
-      preLoaderRoute: typeof DiagnosticoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/diario': {
-      id: '/diario'
-      path: '/diario'
-      fullPath: '/diario'
-      preLoaderRoute: typeof DiarioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/inicio': {
-      id: '/inicio'
-      path: '/inicio'
-      fullPath: '/inicio'
-      preLoaderRoute: typeof InicioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/inicio-demo': {
-      id: '/inicio-demo'
-      path: '/inicio-demo'
-      fullPath: '/inicio-demo'
-      preLoaderRoute: typeof InicioDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/metodo': {
-      id: '/metodo'
-      path: '/metodo'
-      fullPath: '/metodo'
-      preLoaderRoute: typeof MetodoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/minha-orquidea': {
-      id: '/minha-orquidea'
-      path: '/minha-orquidea'
-      fullPath: '/minha-orquidea'
-      preLoaderRoute: typeof MinhaOrquideaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/opcoes-metodo': {
-      id: '/opcoes-metodo'
-      path: '/opcoes-metodo'
-      fullPath: '/opcoes-metodo'
-      preLoaderRoute: typeof OpcoesMetodoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/plano': {
-      id: '/plano'
-      path: '/plano'
-      fullPath: '/plano'
-      preLoaderRoute: typeof PlanoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/protocolo-21-dias': {
-      id: '/protocolo-21-dias'
-      path: '/protocolo-21-dias'
-      fullPath: '/protocolo-21-dias'
-      preLoaderRoute: typeof Protocolo21DiasRouteImport
+    '/teste-onboarding': {
+      id: '/teste-onboarding'
+      path: '/teste-onboarding'
+      fullPath: '/teste-onboarding'
+      preLoaderRoute: typeof TesteOnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resumo': {
@@ -325,11 +241,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResumoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/teste-onboarding': {
-      id: '/teste-onboarding'
-      path: '/teste-onboarding'
-      fullPath: '/teste-onboarding'
-      preLoaderRoute: typeof TesteOnboardingRouteImport
+    '/protocolo-21-dias': {
+      id: '/protocolo-21-dias'
+      path: '/protocolo-21-dias'
+      fullPath: '/protocolo-21-dias'
+      preLoaderRoute: typeof Protocolo21DiasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plano': {
+      id: '/plano'
+      path: '/plano'
+      fullPath: '/plano'
+      preLoaderRoute: typeof PlanoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opcoes-metodo': {
+      id: '/opcoes-metodo'
+      path: '/opcoes-metodo'
+      fullPath: '/opcoes-metodo'
+      preLoaderRoute: typeof OpcoesMetodoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/minha-orquidea': {
+      id: '/minha-orquidea'
+      path: '/minha-orquidea'
+      fullPath: '/minha-orquidea'
+      preLoaderRoute: typeof MinhaOrquideaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/metodo': {
+      id: '/metodo'
+      path: '/metodo'
+      fullPath: '/metodo'
+      preLoaderRoute: typeof MetodoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inicio-demo': {
+      id: '/inicio-demo'
+      path: '/inicio-demo'
+      fullPath: '/inicio-demo'
+      preLoaderRoute: typeof InicioDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inicio': {
+      id: '/inicio'
+      path: '/inicio'
+      fullPath: '/inicio'
+      preLoaderRoute: typeof InicioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diario': {
+      id: '/diario'
+      path: '/diario'
+      fullPath: '/diario'
+      preLoaderRoute: typeof DiarioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diagnostico': {
+      id: '/diagnostico'
+      path: '/diagnostico'
+      fullPath: '/diagnostico'
+      preLoaderRoute: typeof DiagnosticoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bem-vindo': {
+      id: '/bem-vindo'
+      path: '/bem-vindo'
+      fullPath: '/bem-vindo'
+      preLoaderRoute: typeof BemVindoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aprender': {
+      id: '/aprender'
+      path: '/aprender'
+      fullPath: '/aprender'
+      preLoaderRoute: typeof AprenderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
