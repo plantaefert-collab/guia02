@@ -1,6 +1,6 @@
 // Onboarding flow documentation: https://guia02.lovable.app/inicio
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { 
   ChevronRight, 
   ChevronLeft, 
@@ -381,7 +381,7 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
   );
 }
 
-const slideVariants = {
+const slideVariants: Variants = {
   enter: (direction: number) => ({
     x: direction > 0 ? "50%" : "-50%",
     opacity: 0,
