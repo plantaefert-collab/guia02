@@ -1953,8 +1953,9 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
 
   return (
     <div className="space-y-4">
-      {/* Resumo do dia */}
-      <div
+      {/* Blocos contextuais (Início, Cadastro, Diagnóstico) */}
+      {(() => {
+
         role="button"
         tabIndex={0}
         onClick={handleRedirectToPlan}
