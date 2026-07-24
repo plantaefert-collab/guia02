@@ -1,3 +1,4 @@
+// Onboarding flow documentation: https://guia02.lovable.app/inicio
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
