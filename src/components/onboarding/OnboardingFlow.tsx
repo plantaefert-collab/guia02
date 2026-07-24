@@ -31,8 +31,8 @@ interface OnboardingFlowProps {
 }
 
 export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
-  const { state, updatePlant, toggleDiagnosis, saveDiagnosisResult, setOnboarded } = useProtocolStore();
-  const [step, setStep] = useState<OnboardingStep>("welcome");
+  const { state, updatePlant, toggleDiagnosis, saveDiagnosisResult, setOnboarded, setOnboardingStep } = useProtocolStore();
+  const [step, setStep] = useState<OnboardingStep>((state.onboardingStep as OnboardingStep) || "welcome");
   const [busy, setBusy] = useState(false);
 
   const plant = state.plant;
@@ -42,7 +42,9 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
     const sequence: OnboardingStep[] = ["welcome", "plant_info", "diagnosis_intro", "diagnosis_roots", "diagnosis_leaves", "diagnosis_env", "summary"];
     const currentIndex = sequence.indexOf(step);
     if (currentIndex < sequence.length - 1) {
-      setStep(sequence[currentIndex + 1]);
+      const next = sequence[currentIndex + 1];
+      setStep(next);
+      setOnboardingStep(next, actorId);
     } else {
       handleFinish();
     }
@@ -52,7 +54,9 @@ export function OnboardingFlow({ actorId, onFinish }: OnboardingFlowProps) {
     const sequence: OnboardingStep[] = ["welcome", "plant_info", "diagnosis_intro", "diagnosis_roots", "diagnosis_leaves", "diagnosis_env", "summary"];
     const currentIndex = sequence.indexOf(step);
     if (currentIndex > 0) {
-      setStep(sequence[currentIndex - 1]);
+      const prev = sequence[currentIndex - 1];
+      setStep(prev);
+      setOnboardingStep(prev, actorId);
     }
   };
 
