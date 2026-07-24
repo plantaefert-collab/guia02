@@ -2030,7 +2030,7 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
                 </div>
                 <h3 className="mt-3 font-display text-2xl leading-tight text-primary">
                   {isMissingPlant 
-                    ? "Cadastre sua orquídea e comece o diagnóstico" 
+                    ? "Cadastre sua orquídea e faça o diagnóstico" 
                     : "Finalize o diagnóstico da sua orquídea"}
                 </h3>
                 <p className="mt-2 text-sm text-primary/75">
