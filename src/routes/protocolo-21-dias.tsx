@@ -88,7 +88,6 @@ import {
 } from "@/lib/diagnosis-matrix";
 import { useAuthBootstrap } from "@/hooks/use-auth-bootstrap";
 import type { AuthBootstrapStatus } from "@/lib/auth/types";
-export type AuthBootstrapStatusExtended = AuthBootstrapStatus | "onboarding";
 import { AuthScreen } from "@/components/auth/AuthScreen";
 import { AccountMenu } from "@/components/auth/AccountMenu";
 import { LegacyProgressDialog } from "@/components/auth/LegacyProgressDialog";
