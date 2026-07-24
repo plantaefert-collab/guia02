@@ -1953,9 +1953,8 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
 
   return (
     <div className="space-y-4">
-      {/* Blocos contextuais (Início, Cadastro, Diagnóstico) */}
-      {(() => {
-
+      {/* Resumo do dia (Agora apenas se não houver pendências de cadastro/diagnóstico) */}
+      <div
         role="button"
         tabIndex={0}
         onClick={handleRedirectToPlan}
@@ -2041,6 +2040,7 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
           {!dayFullyDone && <ChevronRight size={16} className="opacity-70" />}
         </button>
       </div>
+
 
       <div className="flex items-center justify-between px-1">
         <SectionHeader
