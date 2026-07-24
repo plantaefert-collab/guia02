@@ -2155,6 +2155,7 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
 
       <div className="flex items-center justify-between px-1">
         <SectionHeader
+          eyebrow="Resgate"
           title="O que fazer agora"
           subtitle={focusedMode ? "Visualização concentrada ativa" : "Seu plano guiado passo a passo"}
         />
