@@ -3435,11 +3435,14 @@ function RegisterField({
   meta,
   entry,
   onChange,
+  ...props
 }: {
   meta: ProtocolDay;
   entry: { note: string };
   onChange: (v: string) => void;
+  [key: string]: any;
 }) {
+
   const label = meta.recordPrompt || "Registre sua observação de hoje.";
   const options: RegisterOption[] | undefined = meta.registerOptions;
   const inputId = `note-day-${meta.day}`;
