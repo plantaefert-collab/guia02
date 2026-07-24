@@ -2155,9 +2155,8 @@ function InicioTab({ actorId, setTab, setStatus }: { actorId: string; setTab: (t
 
       <div className="flex items-center justify-between px-1">
         <SectionHeader
-          eyebrow="Bloco 2"
-          title="Próximo passo"
-          subtitle={focusedMode ? "Visualização concentrada ativa" : "O que você precisa fazer agora?"}
+          title="O que fazer agora"
+          subtitle={focusedMode ? "Visualização concentrada ativa" : "Seu plano guiado passo a passo"}
         />
         <button
           onClick={() => {
